@@ -1,0 +1,32 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Unit test / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local databases and logs
+*.db
+*.sqlite
+*.sqlite3
+*.csv
+foci_telemetry.json
+data/
+
+# Operating system artifacts
+.DS_Store
+Thumbs.db

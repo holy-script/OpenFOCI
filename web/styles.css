@@ -1,0 +1,18 @@
+/* OpenFOCI Web UI Stylesheet */
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.96); opacity: 0.5; }
+  50% { transform: scale(1.04); opacity: 0.85; }
+  100% { transform: scale(0.96); opacity: 0.5; }
+}
+
+.glass-panel {
+  background: rgba(17, 24, 39, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.pulsing-orb {
+  animation: pulse-ring 4s ease-in-out infinite;
+}

@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "openfoci"
+version = "0.1.0"
+description = "Open-source BLE driver, telemetry engine, and local-first biofeedback visualizer for FOCI wearables."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [
+    { name = "OpenFOCI Contributors" }
+]
+keywords = [
+    "foci",
+    "wearable",
+    "bluetooth",
+    "ble",
+    "respiration",
+    "biofeedback",
+    "airsync",
+    "diaphragm",
+    "telemetry"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Healthcare Industry",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+    "Topic :: System :: Hardware :: Hardware Drivers",
+]
+dependencies = [
+    "bleak>=0.21.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+]
+mqtt = [
+    "paho-mqtt>=1.6.0",
+]
+
+[project.scripts]
+openfoci = "openfoci.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["openfoci*"]
