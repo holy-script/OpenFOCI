@@ -20,8 +20,18 @@
       <stop offset="100%" stop-color="#155e75" stop-opacity="0.4" />
     </linearGradient>
 
-    <filter id="glowLine" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="2" result="blur" />
+    <linearGradient id="arrowGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6366f1" />
+      <stop offset="100%" stop-color="#38bdf8" />
+    </linearGradient>
+
+    <linearGradient id="arrowGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+
+    <filter id="glowLine" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
       <feMerge>
         <feMergeNode in="blur" />
         <feMergeNode in="SourceGraphic" />
@@ -36,7 +46,7 @@
   <text x="480" y="40" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="800" font-size="20" fill="#f8fafc" text-anchor="middle">OpenFOCI Architecture: Sovereign Biometrics Pipeline</text>
   <text x="480" y="62" font-family="monospace" font-size="12" fill="#94a3b8" text-anchor="middle">Hardware-first BLE reverse-engineering, zero-cloud dependency, local-first streaming</text>
 
-  <!-- Column 1: Hardware Layer -->
+  <!-- Column 1: Hardware Layer (x=40..300) -->
   <rect x="40" y="90" width="260" height="350" rx="14" fill="url(#box1)" stroke="#6366f1" stroke-width="1.5" />
   <text x="170" y="125" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-weight="700" font-size="15" fill="#a5b4fc" text-anchor="middle">1. Physical Hardware</text>
   
@@ -55,11 +65,20 @@
   <rect x="60" y="375" width="220" height="45" rx="8" fill="#0f172a" stroke="#4338ca" stroke-width="1" />
   <text x="170" y="402" font-family="monospace" font-size="11" fill="#38bdf8" text-anchor="middle">100% Pogo Pin Charging (No USB)</text>
 
-  <!-- Arrow 1 -> 2 -->
-  <path d="M 305 265 L 345 265" stroke="#38bdf8" stroke-width="3" marker-end="url(#arrow)" filter="url(#glowLine)" />
-  <polygon points="345,260 355,265 345,270" fill="#38bdf8" />
+  <!-- Arrow 1 -> 2 (Luminous, highly visible connecting pipe) -->
+  <g>
+    <!-- Background Halo Glow -->
+    <line x1="300" y1="265" x2="336" y2="265" stroke="#38bdf8" stroke-width="8" stroke-opacity="0.3" filter="url(#glowLine)" />
+    <!-- Solid Foreground Line -->
+    <line x1="300" y1="265" x2="336" y2="265" stroke="url(#arrowGrad1)" stroke-width="3.5" stroke-linecap="round" />
+    <!-- Sharp Arrowhead -->
+    <polygon points="334,258 348,265 334,272" fill="#38bdf8" />
+    <!-- Flow Badge -->
+    <rect x="306" y="240" width="38" height="15" rx="4" fill="#082f49" stroke="#38bdf8" stroke-width="0.8" />
+    <text x="325" y="251" font-family="monospace" font-size="8" font-weight="700" fill="#38bdf8" text-anchor="middle">BLE</text>
+  </g>
 
-  <!-- Column 2: OpenFOCI Core Protocol & Signal Engine -->
+  <!-- Column 2: OpenFOCI Core Protocol & Signal Engine (x=350..610) -->
   <rect x="350" y="90" width="260" height="350" rx="14" fill="url(#box2)" stroke="#10b981" stroke-width="1.5" />
   <text x="480" y="125" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-weight="700" font-size="15" fill="#6ee7b7" text-anchor="middle">2. OpenFOCI Engine</text>
 
@@ -78,11 +97,20 @@
   <rect x="370" y="375" width="220" height="45" rx="8" fill="#064e3b" stroke="#059669" stroke-width="1" />
   <text x="480" y="402" font-family="monospace" font-size="11" fill="#6ee7b7" text-anchor="middle">Cognitive State Classifier</text>
 
-  <!-- Arrow 2 -> 3 -->
-  <path d="M 615 265 L 655 265" stroke="#34d399" stroke-width="3" filter="url(#glowLine)" />
-  <polygon points="655,260 665,265 655,270" fill="#34d399" />
+  <!-- Arrow 2 -> 3 (Luminous, highly visible connecting pipe) -->
+  <g>
+    <!-- Background Halo Glow -->
+    <line x1="610" y1="265" x2="646" y2="265" stroke="#34d399" stroke-width="8" stroke-opacity="0.3" filter="url(#glowLine)" />
+    <!-- Solid Foreground Line -->
+    <line x1="610" y1="265" x2="646" y2="265" stroke="url(#arrowGrad2)" stroke-width="3.5" stroke-linecap="round" />
+    <!-- Sharp Arrowhead -->
+    <polygon points="644,258 658,265 644,272" fill="#34d399" />
+    <!-- Flow Badge -->
+    <rect x="616" y="240" width="38" height="15" rx="4" fill="#064e3b" stroke="#34d399" stroke-width="0.8" />
+    <text x="635" y="251" font-family="monospace" font-size="8" font-weight="700" fill="#34d399" text-anchor="middle">SYNC</text>
+  </g>
 
-  <!-- Column 3: Interaction & Storage Surfaces -->
+  <!-- Column 3: Interaction & Storage Surfaces (x=660..920) -->
   <rect x="660" y="90" width="260" height="350" rx="14" fill="url(#box3)" stroke="#06b6d4" stroke-width="1.5" />
   <text x="790" y="125" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-weight="700" font-size="15" fill="#67e8f9" text-anchor="middle">3. Open Ecosystem</text>
 
