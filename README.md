@@ -1,40 +1,43 @@
-# 🫁 OpenFOCI: Sovereign Biofeedback & Wearable Revival Engine
+# OpenFOCI: Sovereign Biofeedback & Wearable Telemetry Engine
 
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](LICENSE)
-[![Tests: 15 Passed](https://img.shields.io/badge/tests-15%20passed-brightgreen.svg)](tests/)
-[![Zero Cloud](https://img.shields.io/badge/cloud-100%25%20offline-cyan.svg)](#right-to-repair--the-tinylogics-backstory)
-[![Hardware: Dialog DA14580](https://img.shields.io/badge/SoC-Dialog%20DA14580%20ARM-indigo.svg)](docs/GATT_SPEC.md)
+[![Tests](https://img.shields.io/badge/tests-15%20passed-brightgreen.svg)](tests/)
+[![Live Web Cockpit](https://img.shields.io/badge/Web%20Cockpit-Live%20on%20Vercel-blueviolet.svg)](https://web-phi-lac-37.vercel.app)
+[![Architecture](https://img.shields.io/badge/architecture-local--first-cyan.svg)](#architecture)
+[![Hardware](https://img.shields.io/badge/hardware-Dialog%20DA14580%20ARM-indigo.svg)](docs/GATT_SPEC.md)
 
 Open-source Bluetooth Low Energy (BLE) driver, real-time diaphragmatic respiration telemetry engine, and local-first **Mind Orb** biofeedback visualizer for **FOCI** and **FOCI 2** biometric wearables.
+
+**Live Interactive Web Cockpit:** [https://web-phi-lac-37.vercel.app](https://web-phi-lac-37.vercel.app)
 
 ---
 
 <p align="center">
-  <img src="assets/mind_orb_preview.svg" alt="OpenFOCI Mind Orb &amp; 10 Hz Oscilloscope" width="100%" />
+  <img src="assets/mind_orb_preview.svg" alt="OpenFOCI Mind Orb and 10 Hz Oscilloscope" width="100%" />
 </p>
 
 ---
 
-## 🏛️ Right to Repair & The Tinylogics Backstory
+## Right to Repair & Technical Backstory
 
-In 2018–2021, Cambridge-based startup **Tinylogics Ltd** raised over **\$900,000** across [Kickstarter](https://www.kickstarter.com/projects/661527809/foci-wearable-that-boosts-your-focus) and [Indiegogo](https://www.indiegogo.com/projects/foci-2-boosts-your-focus-productivity-with-ai#/) from more than 7,000 backers to create **FOCI**, a tiny waist-worn clip that tracks diaphragmatic breathing and cognitive states (*Flow, Focus, Calm, Distraction, Fatigue*).
+Between 2018 and 2021, Cambridge-based startup **Tinylogics Ltd** raised over \$900,000 across [Kickstarter](https://www.kickstarter.com/projects/661527809/foci-wearable-that-boosts-your-focus) and [Indiegogo](https://www.indiegogo.com/projects/foci-2-boosts-your-focus-productivity-with-ai#/) from thousands of backers to produce **FOCI**, a waist-worn clip tracking diaphragmatic breathing patterns and cognitive state estimates (*Flow, Focus, Calm, Distraction, Fatigue*).
 
-On **September 2, 2025**, Tinylogics was formally dissolved via compulsory strike-off ([UK Companies House #08954266](https://find-and-update.company-information.service.gov.uk/company/08954266)). The official authentication servers were taken offline, and the mobile app (`com.tinylogics.foci`) was pulled from app stores, leaving thousands of perfectly working devices unable to pass the login screen and functionally bricked.
+Following company dissolution in September 2025 ([UK Companies House #08954266](https://find-and-update.company-information.service.gov.uk/company/08954266)), the centralized authentication servers were deactivated and the mobile app (`com.tinylogics.foci`) was removed from distribution, stranding physical devices at a cloud login gate.
 
-### Reverse-Engineering Revelations
-Through hardware teardowns and Android APK deobfuscation, we uncovered three critical facts:
-1. **No ML Ever Ran in the Cloud**: The digital signal processing (DSP), zero-crossing breath rate estimation, autoregressive motion parameters (AR1/AR3), and mental state classifications run directly on the clip's on-board **Dialog Semiconductor DA14580 Cortex-M0 SoC**. The cloud servers were solely a user account/licensing gate.
-2. **Standard WeChat AirSync BLE Profile**: The clip advertises GATT Service `0xFEE7` and uses standard AirSync framing with a 4-byte CRC32 challenge.
-3. **Cryptographic WriteKey Formula**: The device unlock key is derived via:
+### Reverse-Engineering Findings
+
+1. **On-Device Inference**: Digital signal processing (DSP), zero-crossing respiration rate computation, autoregressive motion parameters (AR1/AR3), and mental state classifications execute directly on the wearable's **Dialog Semiconductor DA14580 Cortex-M0 SoC**. Cloud endpoints served solely as an account/licensing check.
+2. **WeChat AirSync Profile**: The peripheral advertises standard GATT Service `0xFEE7` and uses standard AirSync framing with a 4-byte CRC32 challenge.
+3. **Cryptographic WriteKey Derivation**: Device authorization requires a 32-bit key computed from:
    $$\text{writeKey} = \text{MD5}\left(\text{UID} + \text{"3BF608C70828"} + \text{reversed\_mac\_hex}\right)[:4]$$
-4. **Charging Cradle has No USB Data**: The physical magnetic dock contains only 2 pogo pins ($+5\text{V}$ and $\text{GND}$). Communication must happen over BLE.
+4. **Hardware Interface**: The physical magnetic cradle exposes only two contacts (+5V and GND) for charging. All diagnostic and data exchange must occur over BLE.
 
-**OpenFOCI emancipates the hardware from cloud obsolescence.** It connects directly over BLE, handles the AirSync authentication handshake, streams raw 10 Hz diaphragmatic micro-motion waveforms, and provides a standalone Mind Orb web interface with zero cloud dependencies.
+**OpenFOCI** restores full utility to this hardware without proprietary cloud intermediaries. It negotiates the BLE authentication handshake, streams raw 10 Hz diaphragmatic waveforms, and exposes modern visualization and data interfaces.
 
 ---
 
-## 🗺️ System Architecture
+## System Architecture
 
 <p align="center">
   <img src="assets/openfoci_architecture.svg" alt="OpenFOCI Architecture" width="100%" />
@@ -42,39 +45,38 @@ Through hardware teardowns and Android APK deobfuscation, we uncovered three cri
 
 ---
 
-## ⚡ Features
+## Key Capabilities
 
-* 🫁 **Hardware-First BLE Driver**: Complete asynchronous implementation of the WeChat AirSync protocol (`0xFEE7` GATT) with 20-byte MTU slicing, challenge-response auth, and keepalive heartbeats.
-* 🌊 **10 Hz Respiration Oscilloscope**: Real-time diaphragmatic excursion waveform capture isolating abdominal movement from gross accelerometer activity.
-* 📈 **Rolling Signal Analyzer**: 60-second rolling window peak/trough detector computing instantaneous respiration rate (BPM), breath rhythm regularity / fluidity (coherence %), and diaphragmatic depth.
-* 🔮 **Zero-Install Mind Orb Cockpit**: Built-in HTML5 Canvas & WebGL chromatic fluid visualizer served locally over HTTP/SSE. The orb pulses in rhythm with your breathing and shifts color based on autonomic tone (*Cyan = Flow, Purple = Focus, Emerald = Calm, Crimson = Stress*).
-* 💾 **Pluggable Storage Targets**: Stream biometric snapshots directly to SQLite relational tables, high-frequency CSV files, atomic local JSON files, or forward via HTTP Webhooks and MQTT.
-* 🏡 **Home Assistant & MQTT Ready**: Native MQTT auto-discovery configuration to trigger biofeedback automations (smart lights, HVAC, focus playlists) when entering deep flow or acute stress.
-* 🧪 **Synthetic Simulation Mode**: Complete offline simulation engine generating realistic biological breathing harmonics and state cycles without requiring physical hardware.
+- **Hardware BLE Driver**: Full asynchronous driver for WeChat AirSync (`0xFEE7` GATT) with 20-byte MTU slicing, challenge-response negotiation, and keepalive management.
+- **10 Hz Respiration Oscilloscope**: Real-time diaphragmatic displacement capture isolating abdominal excursion from gross body motion.
+- **Rolling Biometric Analyzer**: 60-second rolling window peak and trough detector computing respiration rate (BPM), rhythm regularity (fluidity/coherence percentage), and diaphragmatic excursion depth.
+- **Mind Orb Visualizer**: Modern WebGL / Next.js cockpit with fluid particle physics responding dynamically to respiratory cycles and autonomic state indicators.
+- **Pluggable Persistence**: Stream telemetry to SQLite databases, high-frequency CSV files, atomic JSON files, or forward to HTTP webhooks.
+- **Home Assistant & MQTT Integration**: Automated MQTT discovery schema for home automation triggers based on autonomic state shifts.
+- **Synthetic Simulation Engine**: Complete mathematical emulation generating realistic biological respiratory harmonics and state cycles for offline development without physical hardware.
 
 ---
 
-## 🚀 Quickstart in 60 Seconds
+## Quickstart
 
 ### 1. Installation
 
-Requires Python 3.9+ and Bluetooth 4.0+ hardware (macOS CoreBluetooth and Linux BlueZ supported natively).
+Requires Python 3.9+ and a Bluetooth 4.0+ adapter (macOS CoreBluetooth and Linux BlueZ supported).
 
 ```bash
-# Clone the repository
 git clone https://github.com/holy-script/OpenFOCI.git
 cd OpenFOCI
 
 # Install in editable mode
 pip install -e .
 
-# Or install with development dependencies (pytest)
+# Install with testing dependencies
 pip install -e ".[dev]"
 ```
 
 ### 2. Discover Your Clip
 
-Place your charged FOCI clip near your computer and scan:
+Ensure the clip is charged and located near your computer:
 
 ```bash
 openfoci scan
@@ -82,11 +84,11 @@ openfoci scan
 
 Output:
 ```text
-🔍 Scanning for nearby BLE devices (8 seconds)...
+Scanning for nearby BLE devices (8 seconds)...
 ============================================================================
 DEVICE NAME                BLE ADDRESS / UUID                   RSSI     MATCH
 ============================================================================
-FOCI                       5C7427EA-91E6-9039-5D37-6D185EB23FC5 -61 dBm   ★ FOCI DETECTED
+FOCI                       5C7427EA-91E6-9039-5D37-6D185EB23FC5 -61 dBm   FOCI DETECTED
 ============================================================================
 Total discovered: 6 | FOCI targets: 1
 ```
@@ -100,11 +102,11 @@ openfoci stream
 Terminal HUD:
 ```text
 ============================================================================
-🫁 FOCI WEARABLE TELEMETRY HUD (OpenFOCI Core)
+FOCI WEARABLE TELEMETRY HUD (OpenFOCI Core)
 ============================================================================
 Device:        FOCI 78 (a4:11:63:e0:7e:87)
-Connection:    🟢 CONNECTED
-Wearing State: 🟢 Worn on waistband
+Connection:    CONNECTED
+Wearing State: Worn on waistband
 Battery:       88% (3900 mV)
 Mental State:  FLOW (Confidence: 85%)
 Respiration:   14.0 breaths/min
@@ -114,38 +116,37 @@ Streak:        Focus Streak (25 min)
 ============================================================================
 ```
 
-### 4. Launch the Mind Orb Web Cockpit
+### 4. Launch the Mind Orb Cockpit
 
-Start the local web dashboard and Server-Sent Events (SSE) streaming server:
+Run the local web dashboard and SSE stream:
 
 ```bash
 openfoci serve --port 8080
 ```
 
-Open [http://localhost:8080](http://localhost:8080) in any browser to watch your chromatic Mind Orb and 10 Hz respiration waveform live.
+Open [http://localhost:8080](http://localhost:8080) to inspect the live fluid Mind Orb and real-time 10 Hz oscilloscope, or explore the hosted dashboard directly at [https://web-phi-lac-37.vercel.app](https://web-phi-lac-37.vercel.app).
 
 ---
 
-## 🐍 Python SDK Example
+## Python SDK Example
 
-Integrate OpenFOCI directly into your own data science scripts, AI agents, or robotic systems:
+Integrate OpenFOCI directly into custom analytics, agents, or automation loops:
 
 ```python
 import asyncio
 from openfoci.client import FociDevice, FociBleDriver
 
 async def main():
-    # Instantiate device with clip MAC / UUID
     device = FociDevice(mac="a4:11:63:e0:7e:87")
 
-    def on_telemetry(snapshot):
+    def handle_telemetry(snapshot):
         bpm = snapshot["breath"]["respirationRate"]
         coherence = snapshot["breath"]["fluidity"]
         state = snapshot["mentalState"]
         battery = snapshot["batteryLevel"]
         print(f"[{state.upper()}] {bpm:.1f} bpm | Coherence: {coherence}% | Battery: {battery}%")
 
-    driver = FociBleDriver(device, on_telemetry=on_telemetry)
+    driver = FociBleDriver(device, on_telemetry=handle_telemetry)
     await driver.run()
 
 if __name__ == "__main__":
@@ -154,61 +155,49 @@ if __name__ == "__main__":
 
 ---
 
-## 🗺️ Project Roadmap
+## Project Roadmap
 
-- [x] **Phase 1: BLE Protocol Reverse-Engineering & Emancipation**
-  - [x] AirSync GATT service (`0xFEE7`) identification & 20-byte MTU slicing
-  - [x] AuthRequest (`0x2711`) & CRC32 InitRequest (`0x2713`) challenge solving
-  - [x] Proprietary `3BF608C70828` secret key extraction & `writeKey` formula derivation
-  - [x] Continuous `0x4E22` SendData ACK loop to keep streaming alive
-- [x] **Phase 2: Local Core Driver & Web Visualizer**
-  - [x] Asynchronous Python client (`openfoci.client.FociBleDriver`)
-  - [x] 60-second rolling breath peak/trough detector & coherence scoring
-  - [x] Standalone, zero-install HTML5/WebGL Mind Orb web cockpit with SSE
-  - [x] High-frequency CLI streaming dashboard (`openfoci stream`)
+- [x] **Phase 1: BLE Protocol Reverse-Engineering**
+  - [x] AirSync GATT service (`0xFEE7`) identification and 20-byte MTU slicing
+  - [x] AuthRequest (`0x2711`) and CRC32 InitRequest (`0x2713`) challenge resolution
+  - [x] `writeKey` derivation formula extraction
+  - [x] Continuous `0x4E22` SendData ACK loop
+- [x] **Phase 2: Local Core Driver & Web Cockpit**
+  - [x] Asynchronous Python driver (`openfoci.client.FociBleDriver`)
+  - [x] 60-second rolling breath detector and coherence scoring
+  - [x] Modern WebGL Mind Orb cockpit with real-time SSE stream
+  - [x] Terminal biofeedback meter (`openfoci stream`)
 - [x] **Phase 3: Pluggable Storage & Integrations**
-  - [x] SQLite time-series database with indexed timestamps & streak logs
+  - [x] SQLite time-series storage with indexed timestamps
   - [x] High-frequency CSV sample exporter
   - [x] Atomic JSON snapshot writer for local system daemons
-  - [x] Webhook / REST cloud forwarding adapter
+  - [x] Webhook / REST forwarding adapter
   - [x] Home Assistant MQTT auto-discovery configuration
-- [x] **Phase 4: Offline Android APK Repackaging & Mobile Patching**
+- [x] **Phase 4: Offline Android APK Repackaging**
   - [x] Smali bytecode patch on `TrackerSDK.smali` (`checkLoginStatus -> true`)
   - [x] Smali bytecode patch on `AccountManager.smali` (`hasAutoLoginToken -> true`, default UID `1001`)
   - [x] Smali bytecode patch on `SplashViewPagerActivity.smali` (`loginSuccessFinished()` in `onCreate`)
-  - [x] Automated 1-click APK patcher script (`tools/patch_apk.sh`) with `apktool` & `uber-apk-signer`
-  - [x] Pre-signed offline APK ready for ADB deployment (`tools/FOCI_Offline_Patched.apk`)
+  - [x] Automated APK patcher script (`tools/patch_apk.sh`)
 - [ ] **Phase 5: PyPI Release & Multi-OS CI/CD**
   - [ ] PyPI distribution package (`pip install openfoci`)
-  - [ ] Automated GitHub Actions CI across macOS, Ubuntu Linux, and Windows
-- [ ] **Phase 6: Advanced Deep Learning Respiratory Sinus Arrhythmia (RSA) Model**
-  - [ ] 1D-CNN / Temporal Convolutional Network (TCN) trained on raw 10 Hz strain data
-  - [ ] Autonomous nervous system arousal estimation (HRV proxy)
+  - [ ] GitHub Actions CI across macOS, Linux, and Windows
+- [ ] **Phase 6: Advanced Respiratory Sinus Arrhythmia (RSA) Model**
+  - [ ] Temporal Convolutional Network (TCN) trained on raw 10 Hz strain data
+  - [ ] Autonomic nervous system tone estimation (HRV proxy)
   - [ ] Personalized user calibration profiles
 
 ---
 
-## 🤝 Community Outreach & Support
+## Technical Specifications & References
 
-If you own a stranded FOCI clip, or are an engineer fighting planned obsolescence:
-
-* Read our [Community Outreach & Revival Guide](docs/COMMUNITY_OUTREACH.md) for pre-written post templates and direct links to Kickstarter/Indiegogo backer forums.
-* Share your findings on [r/focigadget](https://www.reddit.com/r/focigadget/) and [r/quantifiedself](https://www.reddit.com/r/quantifiedself/).
-* Open an issue or submit a pull request on [GitHub](https://github.com/holy-script/OpenFOCI).
+- [GATT Specification (docs/GATT_SPEC.md)](docs/GATT_SPEC.md): Full breakdown of UUIDs, byte offsets, opcodes, and bitmasks.
+- [Protocol Reverse-Engineering Dossier (docs/PROTOCOL_BREAKDOWN.md)](docs/PROTOCOL_BREAKDOWN.md): Technical analysis of packet structures, cryptographic derivations, and firmware registers.
+- [Home Assistant Guide (docs/HOME_ASSISTANT.md)](docs/HOME_ASSISTANT.md): Setup instructions for MQTT telemetry streaming and biofeedback automations.
 
 ---
 
-## 📚 Technical Specifications & References
-
-* [GATT Specification (docs/GATT_SPEC.md)](docs/GATT_SPEC.md): Exhaustive breakdown of UUIDs, byte offsets, opcodes, and Little-Endian bitmasks.
-* [Protocol Reverse-Engineering Dossier (docs/PROTOCOL_BREAKDOWN.md)](docs/PROTOCOL_BREAKDOWN.md): Step-by-step account of JADX decompilation, crypto discovery, and packet framing.
-* [Home Assistant Guide (docs/HOME_ASSISTANT.md)](docs/HOME_ASSISTANT.md): Setup instructions for MQTT telemetry streaming and smart home biofeedback.
-* [Community Outreach Guide (docs/COMMUNITY_OUTREACH.md)](docs/COMMUNITY_OUTREACH.md): Backer outreach channels and announcement templates.
-
----
-
-## ⚖️ License
+## License
 
 This project is licensed under the **MIT License** — see [LICENSE](LICENSE) for details.
 
-*Disclaimer: OpenFOCI is an independent open-source hardware liberation and right-to-repair research initiative. It is not affiliated with, endorsed by, or sponsored by Tinylogics Ltd or its successors.*
+*Disclaimer: OpenFOCI is an independent open-source hardware liberation and right-to-repair research project. It is not affiliated with, endorsed by, or sponsored by Tinylogics Ltd or its successors.*

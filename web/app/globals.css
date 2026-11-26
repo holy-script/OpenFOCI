@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  --bg-primary: #030712;
+  --surface-primary: #0B0F19;
+  --surface-card: #111827;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-highlight: rgba(255, 255, 255, 0.16);
+  --color-scrollbar-track: #0B0F19;
+  --color-scrollbar-thumb: #374151;
+  scrollbar-color: var(--color-scrollbar-thumb) var(--color-scrollbar-track);
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: #F3F4F6;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Modern Web Guidance: Defer rendering when off-screen to preserve battery & CPU */
+.heavy-orb-container {
+  content-visibility: auto;
+  contain-intrinsic-size: auto none auto 420px;
+}
+
+/* Glassmorphism Panels */
+.glass-panel {
+  background: rgba(11, 15, 25, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
+}
+
+.glass-panel-hover {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-panel-hover:hover {
+  background: rgba(17, 24, 39, 0.85);
+  border-color: var(--border-highlight);
+  transform: translateY(-2px);
+}
+
+/* Radial Glow Effects */
+.glow-orb-cyan {
+  box-shadow: 0 0 80px rgba(6, 182, 212, 0.25);
+}
+
+.glow-orb-purple {
+  box-shadow: 0 0 80px rgba(139, 92, 246, 0.25);
+}
+
+.glow-orb-emerald {
+  box-shadow: 0 0 80px rgba(16, 185, 129, 0.25);
+}
+
+.glow-orb-rose {
+  box-shadow: 0 0 80px rgba(239, 68, 68, 0.25);
+}
+
+.glow-orb-amber {
+  box-shadow: 0 0 80px rgba(245, 158, 11, 0.25);
+}

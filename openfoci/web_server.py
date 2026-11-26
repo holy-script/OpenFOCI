@@ -32,21 +32,48 @@ class FociHttpHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         url = self.path.split("?")[0]
 
-        if url in ["/", "/index.html"]:
-            self._serve_file(WEB_DIR / "index.html", "text/html; charset=utf-8")
-        elif url == "/styles.css":
-            self._serve_file(WEB_DIR / "styles.css", "text/css; charset=utf-8")
-        elif url == "/app.js":
-            self._serve_file(WEB_DIR / "app.js", "application/javascript; charset=utf-8")
-        elif url == "/api/telemetry":
+        if url == "/api/telemetry":
             self._serve_json(self._get_current_snapshot())
+            return
         elif url == "/api/history":
             history = self.storage.get_history(50) if self.storage else []
             self._serve_json({"success": True, "count": len(history), "history": history})
+            return
         elif url == "/api/stream":
             self._serve_sse_stream()
-        else:
-            self.send_error(404, "File Not Found")
+            return
+
+        # Static assets: check Next.js out/ build first, then root web/, then legacy_static/
+        search_dirs = [
+            WEB_DIR / "out",
+            WEB_DIR,
+            WEB_DIR / "legacy_static",
+        ]
+
+        rel_path = url.lstrip("/")
+        if not rel_path or rel_path == "index.html":
+            rel_path = "index.html"
+
+        content_types = {
+            ".html": "text/html; charset=utf-8",
+            ".css": "text/css; charset=utf-8",
+            ".js": "application/javascript; charset=utf-8",
+            ".json": "application/json; charset=utf-8",
+            ".svg": "image/svg+xml",
+            ".png": "image/png",
+            ".ico": "image/x-icon",
+            ".txt": "text/plain; charset=utf-8",
+        }
+
+        for base_dir in search_dirs:
+            target = base_dir / rel_path
+            if target.is_file():
+                ext = target.suffix.lower()
+                mime = content_types.get(ext, "application/octet-stream")
+                self._serve_file(target, mime)
+                return
+
+        self.send_error(404, "Asset Not Found")
 
     def _get_current_snapshot(self) -> Dict[str, Any]:
         if FociHttpHandler.latest_snapshot:

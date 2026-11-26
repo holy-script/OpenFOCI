@@ -36,6 +36,16 @@ decompiled/
 *.jar
 *.idsig
 
+# Internal planning and private notes
+.planning/
+*.planning*
+
+# Node / Next.js / Vercel
+node_modules/
+.next/
+out/
+.vercel/
+
 # Operating system artifacts
 .DS_Store
 Thumbs.db
