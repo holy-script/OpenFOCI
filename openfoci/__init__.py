@@ -5,7 +5,7 @@ Reviving TinyLogics FOCI / FOCI 2 biometric wearables with sovereign, local-firs
 Bluetooth Low Energy (BLE) diaphragmatic respiration and cognitive state tracking.
 """
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __author__ = "OpenFOCI Contributors"
 __license__ = "MIT"
 

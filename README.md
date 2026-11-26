@@ -1,19 +1,19 @@
 # OpenFOCI: Sovereign Biofeedback & Wearable Telemetry Engine
 
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](LICENSE)
-[![PyPI](https://img.shields.io/badge/pypi-v0.1.0-blue.svg)](https://pypi.org/project/openfoci/)
-[![Release](https://img.shields.io/badge/release-v0.1.0-purple.svg)](https://github.com/holy-script/OpenFOCI/releases)
-[![Tests](https://img.shields.io/badge/tests-15%20passed-brightgreen.svg)](tests/)
-[![Architecture](https://img.shields.io/badge/architecture-local--first-cyan.svg)](#architecture)
-[![Hardware](https://img.shields.io/badge/hardware-Dialog%20DA14580%20ARM-indigo.svg)](docs/GATT_SPEC.md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](https://github.com/holy-script/OpenFOCI/blob/main/LICENSE)
+[![PyPI](https://img.shields.io/badge/pypi-v0.1.1-blue.svg)](https://pypi.org/project/openfoci/)
+[![Release](https://img.shields.io/badge/release-v0.1.1-purple.svg)](https://github.com/holy-script/OpenFOCI/releases)
+[![Tests](https://img.shields.io/badge/tests-15%20passed-brightgreen.svg)](https://github.com/holy-script/OpenFOCI/tree/main/tests)
+[![Architecture](https://img.shields.io/badge/architecture-local--first-cyan.svg)](#system-architecture)
+[![Hardware](https://img.shields.io/badge/hardware-Dialog%20DA14580%20ARM-indigo.svg)](https://github.com/holy-script/OpenFOCI/blob/main/docs/GATT_SPEC.md)
 
 Open-source Bluetooth Low Energy (BLE) driver, real-time diaphragmatic respiration telemetry engine, and local-first **Mind Orb** biofeedback visualizer for **FOCI** and **FOCI 2** biometric wearables.
 
 ---
 
 <p align="center">
-  <img src="assets/mind_orb_cockpit.png" alt="OpenFOCI Mind Orb Cockpit" width="100%" />
+  <img src="https://raw.githubusercontent.com/holy-script/OpenFOCI/main/assets/mind_orb_cockpit.png" alt="OpenFOCI Mind Orb Cockpit" width="100%" />
 </p>
 
 ---
@@ -41,7 +41,7 @@ Following company dissolution in September 2025 ([UK Companies House #08954266](
 ## System Architecture
 
 <p align="center">
-  <img src="assets/openfoci_architecture.svg" alt="OpenFOCI Architecture" width="100%" />
+  <img src="https://raw.githubusercontent.com/holy-script/OpenFOCI/main/assets/openfoci_architecture.svg" alt="OpenFOCI Architecture" width="100%" />
 </p>
 
 ---
@@ -191,14 +191,14 @@ if __name__ == "__main__":
 
 ## Technical Specifications & References
 
-- [GATT Specification (docs/GATT_SPEC.md)](docs/GATT_SPEC.md): Full breakdown of UUIDs, byte offsets, opcodes, and bitmasks.
-- [Protocol Reverse-Engineering Dossier (docs/PROTOCOL_BREAKDOWN.md)](docs/PROTOCOL_BREAKDOWN.md): Technical analysis of packet structures, cryptographic derivations, and firmware registers.
-- [Home Assistant Guide (docs/HOME_ASSISTANT.md)](docs/HOME_ASSISTANT.md): Setup instructions for MQTT telemetry streaming and biofeedback automations.
+- [GATT Specification (docs/GATT_SPEC.md)](https://github.com/holy-script/OpenFOCI/blob/main/docs/GATT_SPEC.md): Full breakdown of UUIDs, byte offsets, opcodes, and bitmasks.
+- [Protocol Reverse-Engineering Dossier (docs/PROTOCOL_BREAKDOWN.md)](https://github.com/holy-script/OpenFOCI/blob/main/docs/PROTOCOL_BREAKDOWN.md): Technical analysis of packet structures, cryptographic derivations, and firmware registers.
+- [Home Assistant Guide (docs/HOME_ASSISTANT.md)](https://github.com/holy-script/OpenFOCI/blob/main/docs/HOME_ASSISTANT.md): Setup instructions for MQTT telemetry streaming and biofeedback automations.
 
 ---
 
 ## License
 
-This project is licensed under the **MIT License** — see [LICENSE](LICENSE) for details.
+This project is licensed under the **MIT License** — see [LICENSE](https://github.com/holy-script/OpenFOCI/blob/main/LICENSE) for details.
 
 *Disclaimer: OpenFOCI is an independent open-source hardware liberation and right-to-repair research project. It is not affiliated with, endorsed by, or sponsored by Tinylogics Ltd or its successors.*

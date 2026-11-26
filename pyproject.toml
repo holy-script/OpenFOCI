@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "openfoci"
-version = "0.1.0"
+version = "0.1.1"
 description = "Open-source BLE driver, telemetry engine, and local-first biofeedback visualizer for FOCI wearables."
 readme = "README.md"
 requires-python = ">=3.9"
