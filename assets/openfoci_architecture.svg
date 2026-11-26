@@ -1,131 +1,191 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 480" width="100%" height="100%">
   <defs>
-    <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#030712" />
-      <stop offset="100%" stop-color="#0f172a" />
+    <!-- Background Gradient -->
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#050814" />
+      <stop offset="50%" stop-color="#0b1329" />
+      <stop offset="100%" stop-color="#030712" />
     </linearGradient>
 
-    <linearGradient id="box1" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#1e1b4b" stop-opacity="0.8" />
-      <stop offset="100%" stop-color="#312e81" stop-opacity="0.4" />
+    <!-- Column 1 Card Gradient -->
+    <linearGradient id="col1Grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e1b4b" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.75" />
     </linearGradient>
 
-    <linearGradient id="box2" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#064e3b" stop-opacity="0.8" />
-      <stop offset="100%" stop-color="#065f46" stop-opacity="0.4" />
+    <!-- Column 2 Card Gradient -->
+    <linearGradient id="col2Grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#064e3b" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#022c22" stop-opacity="0.75" />
     </linearGradient>
 
-    <linearGradient id="box3" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#164e63" stop-opacity="0.8" />
-      <stop offset="100%" stop-color="#155e75" stop-opacity="0.4" />
+    <!-- Column 3 Card Gradient -->
+    <linearGradient id="col3Grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0e3a52" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#082f49" stop-opacity="0.75" />
     </linearGradient>
 
-    <linearGradient id="arrowGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
+    <!-- Inner Card Backgrounds -->
+    <linearGradient id="cardBg1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#16152b" />
+      <stop offset="100%" stop-color="#0d0e1e" />
+    </linearGradient>
+    <linearGradient id="cardBg2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#092820" />
+      <stop offset="100%" stop-color="#041813" />
+    </linearGradient>
+    <linearGradient id="cardBg3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a2535" />
+      <stop offset="100%" stop-color="#051620" />
+    </linearGradient>
+
+    <!-- Solid robust gradients using userSpaceOnUse to eliminate any zero-height bounding-box bugs -->
+    <linearGradient id="pipeGrad1" x1="280" y1="268" x2="360" y2="268" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#6366f1" />
+      <stop offset="60%" stop-color="#38bdf8" />
       <stop offset="100%" stop-color="#38bdf8" />
     </linearGradient>
-
-    <linearGradient id="arrowGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
+    <linearGradient id="pipeGrad2" x1="600" y1="268" x2="680" y2="268" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#10b981" />
-      <stop offset="100%" stop-color="#06b6d4" />
+      <stop offset="60%" stop-color="#34d399" />
+      <stop offset="100%" stop-color="#34d399" />
     </linearGradient>
-
-    <filter id="glowLine" x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur stdDeviation="3" result="blur" />
-      <feMerge>
-        <feMergeNode in="blur" />
-        <feMergeNode in="SourceGraphic" />
-      </feMerge>
-    </filter>
   </defs>
 
-  <!-- Background -->
-  <rect width="960" height="480" rx="16" fill="url(#bg2)" stroke="#334155" stroke-width="1.5" />
+  <!-- Canvas Background -->
+  <rect width="960" height="480" rx="16" fill="url(#bg)" stroke="#1e293b" stroke-width="1.5" />
 
-  <!-- Section Titles -->
-  <text x="480" y="40" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="800" font-size="20" fill="#f8fafc" text-anchor="middle">OpenFOCI Architecture: Sovereign Biometrics Pipeline</text>
-  <text x="480" y="62" font-family="monospace" font-size="12" fill="#94a3b8" text-anchor="middle">Hardware-first BLE reverse-engineering, zero-cloud dependency, local-first streaming</text>
+  <!-- Diagram Title & Subtitle -->
+  <text x="480" y="38" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="800" font-size="19" fill="#f8fafc" text-anchor="middle" letter-spacing="0.5">OpenFOCI Architecture: Sovereign Biometrics Pipeline</text>
+  <text x="480" y="58" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#94a3b8" text-anchor="middle">Hardware-first BLE reverse-engineering • Zero cloud dependencies • Local-first biometrics</text>
 
-  <!-- Column 1: Hardware Layer (x=40..300) -->
-  <rect x="40" y="90" width="260" height="350" rx="14" fill="url(#box1)" stroke="#6366f1" stroke-width="1.5" />
-  <text x="170" y="125" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-weight="700" font-size="15" fill="#a5b4fc" text-anchor="middle">1. Physical Hardware</text>
-  
-  <rect x="60" y="150" width="220" height="60" rx="8" fill="#0f172a" stroke="#4338ca" stroke-width="1" />
-  <text x="170" y="175" font-family="monospace" font-weight="700" font-size="12" fill="#e0e7ff" text-anchor="middle">Dialog DA14580 SoC</text>
-  <text x="170" y="195" font-family="monospace" font-size="10" fill="#94a3b8" text-anchor="middle">ARM Cortex-M0 BLE 4.2</text>
+  <!-- ===================================================================== -->
+  <!-- COLUMN 1: PHYSICAL HARDWARE (x=40..280, width=240)                    -->
+  <!-- ===================================================================== -->
+  <rect x="40" y="82" width="240" height="372" rx="14" fill="url(#col1Grad)" stroke="#6366f1" stroke-width="1.5" />
+  <!-- Header Badge -->
+  <rect x="56" y="96" width="208" height="28" rx="6" fill="#312e81" fill-opacity="0.6" stroke="#4f46e5" stroke-width="1" />
+  <text x="160" y="115" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-weight="700" font-size="13" fill="#c7d2fe" text-anchor="middle">1. Physical Hardware</text>
 
-  <rect x="60" y="225" width="220" height="60" rx="8" fill="#0f172a" stroke="#4338ca" stroke-width="1" />
-  <text x="170" y="250" font-family="monospace" font-weight="700" font-size="12" fill="#e0e7ff" text-anchor="middle">Physical Sensors</text>
-  <text x="170" y="270" font-family="monospace" font-size="10" fill="#94a3b8" text-anchor="middle">Diaphragmatic Strain + Accel</text>
+  <!-- Col 1 Item 1 -->
+  <rect x="56" y="136" width="208" height="64" rx="8" fill="url(#cardBg1)" stroke="#4338ca" stroke-width="1" />
+  <text x="160" y="161" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="700" font-size="12" fill="#e0e7ff" text-anchor="middle">Dialog DA14580 SoC</text>
+  <text x="160" y="181" font-family="ui-monospace, SFMono-Regular, monospace" font-size="10" fill="#94a3b8" text-anchor="middle">ARM Cortex-M0 • BLE 4.2 Core</text>
 
-  <rect x="60" y="300" width="220" height="60" rx="8" fill="#0f172a" stroke="#4338ca" stroke-width="1" />
-  <text x="170" y="325" font-family="monospace" font-weight="700" font-size="12" fill="#e0e7ff" text-anchor="middle">Tencent AirSync GATT</text>
-  <text x="170" y="345" font-family="monospace" font-size="10" fill="#94a3b8" text-anchor="middle">UUID: 0xFEE7 (20-byte MTU)</text>
+  <!-- Col 1 Item 2 -->
+  <rect x="56" y="212" width="208" height="64" rx="8" fill="url(#cardBg1)" stroke="#4338ca" stroke-width="1" />
+  <text x="160" y="237" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="700" font-size="12" fill="#e0e7ff" text-anchor="middle">Physical Sensors</text>
+  <text x="160" y="257" font-family="ui-monospace, SFMono-Regular, monospace" font-size="10" fill="#94a3b8" text-anchor="middle">Diaphragmatic Strain + Accel</text>
 
-  <rect x="60" y="375" width="220" height="45" rx="8" fill="#0f172a" stroke="#4338ca" stroke-width="1" />
-  <text x="170" y="402" font-family="monospace" font-size="11" fill="#38bdf8" text-anchor="middle">100% Pogo Pin Charging (No USB)</text>
+  <!-- Col 1 Item 3 -->
+  <rect x="56" y="288" width="208" height="64" rx="8" fill="url(#cardBg1)" stroke="#4338ca" stroke-width="1" />
+  <text x="160" y="313" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="700" font-size="12" fill="#e0e7ff" text-anchor="middle">Tencent AirSync GATT</text>
+  <text x="160" y="333" font-family="ui-monospace, SFMono-Regular, monospace" font-size="10" fill="#94a3b8" text-anchor="middle">UUID: 0xFEE7 (20-byte MTU)</text>
 
-  <!-- Arrow 1 -> 2 (Luminous, highly visible connecting pipe) -->
-  <g>
-    <!-- Background Halo Glow -->
-    <line x1="300" y1="265" x2="336" y2="265" stroke="#38bdf8" stroke-width="8" stroke-opacity="0.3" filter="url(#glowLine)" />
-    <!-- Solid Foreground Line -->
-    <line x1="300" y1="265" x2="336" y2="265" stroke="url(#arrowGrad1)" stroke-width="3.5" stroke-linecap="round" />
-    <!-- Sharp Arrowhead -->
-    <polygon points="334,258 348,265 334,272" fill="#38bdf8" />
-    <!-- Flow Badge -->
-    <rect x="306" y="240" width="38" height="15" rx="4" fill="#082f49" stroke="#38bdf8" stroke-width="0.8" />
-    <text x="325" y="251" font-family="monospace" font-size="8" font-weight="700" fill="#38bdf8" text-anchor="middle">BLE</text>
+  <!-- Col 1 Item 4 -->
+  <rect x="56" y="364" width="208" height="64" rx="8" fill="url(#cardBg1)" stroke="#4338ca" stroke-width="1" />
+  <text x="160" y="389" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="700" font-size="12" fill="#38bdf8" text-anchor="middle">Pogo Pin Interface</text>
+  <text x="160" y="409" font-family="ui-monospace, SFMono-Regular, monospace" font-size="10" fill="#94a3b8" text-anchor="middle">2-Pin 5V Charge • Zero Wired USB</text>
+
+
+  <!-- ===================================================================== -->
+  <!-- CONNECTOR 1 -> 2: HIGH-VISIBILITY PIPELINE (x=280..360, width=80)     -->
+  <!-- ===================================================================== -->
+  <g id="connector-ble">
+    <!-- Flow Badge (Centered in the 80px gap at x=320) -->
+    <rect x="288" y="228" width="64" height="24" rx="12" fill="#0b1b36" stroke="#38bdf8" stroke-width="1.4" />
+    <circle cx="302" cy="240" r="3" fill="#38bdf8" />
+    <text x="325" y="244" font-family="ui-monospace, SFMono-Regular, monospace" font-size="9.5" font-weight="800" fill="#38bdf8" text-anchor="middle">BLE 4.2</text>
+    
+    <!-- Vertical Link from Badge to Pipeline -->
+    <line x1="320" y1="252" x2="320" y2="265" stroke="#38bdf8" stroke-width="1.8" stroke-linecap="round" />
+
+    <!-- Luminous Outer Glow Track -->
+    <rect x="280" y="262" width="68" height="12" rx="6" fill="#38bdf8" fill-opacity="0.22" />
+    <!-- Solid Core Pipeline Bar -->
+    <rect x="280" y="265" width="68" height="6" rx="3" fill="url(#pipeGrad1)" />
+
+    <!-- Solid Arrowhead Polygon -->
+    <polygon points="346,256 360,268 346,280" fill="#38bdf8" />
   </g>
 
-  <!-- Column 2: OpenFOCI Core Protocol & Signal Engine (x=350..610) -->
-  <rect x="350" y="90" width="260" height="350" rx="14" fill="url(#box2)" stroke="#10b981" stroke-width="1.5" />
-  <text x="480" y="125" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-weight="700" font-size="15" fill="#6ee7b7" text-anchor="middle">2. OpenFOCI Engine</text>
 
-  <rect x="370" y="150" width="220" height="60" rx="8" fill="#064e3b" stroke="#059669" stroke-width="1" />
-  <text x="480" y="175" font-family="monospace" font-weight="700" font-size="12" fill="#d1fae5" text-anchor="middle">WeChat AirSync Handshake</text>
-  <text x="480" y="195" font-family="monospace" font-size="10" fill="#a7f3d0" text-anchor="middle">AuthReq (0x2711) + CRC32 Init</text>
+  <!-- ===================================================================== -->
+  <!-- COLUMN 2: OPENFOCI CORE ENGINE (x=360..600, width=240)                -->
+  <!-- ===================================================================== -->
+  <rect x="360" y="82" width="240" height="372" rx="14" fill="url(#col2Grad)" stroke="#10b981" stroke-width="1.5" />
+  <!-- Header Badge -->
+  <rect x="376" y="96" width="208" height="28" rx="6" fill="#065f46" fill-opacity="0.6" stroke="#059669" stroke-width="1" />
+  <text x="480" y="115" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-weight="700" font-size="13" fill="#a7f3d0" text-anchor="middle">2. OpenFOCI Engine</text>
 
-  <rect x="370" y="225" width="220" height="60" rx="8" fill="#064e3b" stroke="#059669" stroke-width="1" />
-  <text x="480" y="250" font-family="monospace" font-weight="700" font-size="12" fill="#d1fae5" text-anchor="middle">Secret WriteKey Crypto</text>
-  <text x="480" y="270" font-family="monospace" font-size="9" fill="#a7f3d0" text-anchor="middle">MD5(uid + 3BF608C70828 + rev_mac)</text>
+  <!-- Col 2 Item 1 -->
+  <rect x="376" y="136" width="208" height="64" rx="8" fill="url(#cardBg2)" stroke="#059669" stroke-width="1" />
+  <text x="480" y="161" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="700" font-size="12" fill="#d1fae5" text-anchor="middle">AirSync Handshake</text>
+  <text x="480" y="181" font-family="ui-monospace, SFMono-Regular, monospace" font-size="10" fill="#6ee7b7" text-anchor="middle">AuthReq (0x2711) + CRC32 Init</text>
 
-  <rect x="370" y="300" width="220" height="60" rx="8" fill="#064e3b" stroke="#059669" stroke-width="1" />
-  <text x="480" y="325" font-family="monospace" font-weight="700" font-size="12" fill="#d1fae5" text-anchor="middle">Rolling Breath Analyzer</text>
-  <text x="480" y="345" font-family="monospace" font-size="10" fill="#a7f3d0" text-anchor="middle">10 Hz Peak/Trough, Coherence</text>
+  <!-- Col 2 Item 2 -->
+  <rect x="376" y="212" width="208" height="64" rx="8" fill="url(#cardBg2)" stroke="#059669" stroke-width="1" />
+  <text x="480" y="237" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="700" font-size="12" fill="#d1fae5" text-anchor="middle">Secret WriteKey Crypto</text>
+  <text x="480" y="257" font-family="ui-monospace, SFMono-Regular, monospace" font-size="9.5" fill="#6ee7b7" text-anchor="middle">MD5(uid + 3BF608C70828 + mac)</text>
 
-  <rect x="370" y="375" width="220" height="45" rx="8" fill="#064e3b" stroke="#059669" stroke-width="1" />
-  <text x="480" y="402" font-family="monospace" font-size="11" fill="#6ee7b7" text-anchor="middle">Cognitive State Classifier</text>
+  <!-- Col 2 Item 3 -->
+  <rect x="376" y="288" width="208" height="64" rx="8" fill="url(#cardBg2)" stroke="#059669" stroke-width="1" />
+  <text x="480" y="313" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="700" font-size="12" fill="#d1fae5" text-anchor="middle">Rolling Breath Analyzer</text>
+  <text x="480" y="333" font-family="ui-monospace, SFMono-Regular, monospace" font-size="10" fill="#6ee7b7" text-anchor="middle">10 Hz Peak/Trough • Fluidity</text>
 
-  <!-- Arrow 2 -> 3 (Luminous, highly visible connecting pipe) -->
-  <g>
-    <!-- Background Halo Glow -->
-    <line x1="610" y1="265" x2="646" y2="265" stroke="#34d399" stroke-width="8" stroke-opacity="0.3" filter="url(#glowLine)" />
-    <!-- Solid Foreground Line -->
-    <line x1="610" y1="265" x2="646" y2="265" stroke="url(#arrowGrad2)" stroke-width="3.5" stroke-linecap="round" />
-    <!-- Sharp Arrowhead -->
-    <polygon points="644,258 658,265 644,272" fill="#34d399" />
-    <!-- Flow Badge -->
-    <rect x="616" y="240" width="38" height="15" rx="4" fill="#064e3b" stroke="#34d399" stroke-width="0.8" />
-    <text x="635" y="251" font-family="monospace" font-size="8" font-weight="700" fill="#34d399" text-anchor="middle">SYNC</text>
+  <!-- Col 2 Item 4 -->
+  <rect x="376" y="364" width="208" height="64" rx="8" fill="url(#cardBg2)" stroke="#059669" stroke-width="1" />
+  <text x="480" y="389" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="700" font-size="12" fill="#34d399" text-anchor="middle">Cognitive Classifier</text>
+  <text x="480" y="409" font-family="ui-monospace, SFMono-Regular, monospace" font-size="10" fill="#6ee7b7" text-anchor="middle">Calm, Focus, Distraction, Tense</text>
+
+
+  <!-- ===================================================================== -->
+  <!-- CONNECTOR 2 -> 3: HIGH-VISIBILITY PIPELINE (x=600..680, width=80)     -->
+  <!-- ===================================================================== -->
+  <g id="connector-sync">
+    <!-- Flow Badge (Centered in the 80px gap at x=640) -->
+    <rect x="610" y="228" width="60" height="24" rx="12" fill="#04271e" stroke="#34d399" stroke-width="1.4" />
+    <circle cx="623" cy="240" r="3" fill="#34d399" />
+    <text x="645" y="244" font-family="ui-monospace, SFMono-Regular, monospace" font-size="9.5" font-weight="800" fill="#34d399" text-anchor="middle">SYNC</text>
+    
+    <!-- Vertical Link from Badge to Pipeline -->
+    <line x1="640" y1="252" x2="640" y2="265" stroke="#34d399" stroke-width="1.8" stroke-linecap="round" />
+
+    <!-- Luminous Outer Glow Track -->
+    <rect x="600" y="262" width="68" height="12" rx="6" fill="#34d399" fill-opacity="0.22" />
+    <!-- Solid Core Pipeline Bar -->
+    <rect x="600" y="265" width="68" height="6" rx="3" fill="url(#pipeGrad2)" />
+
+    <!-- Solid Arrowhead Polygon -->
+    <polygon points="666,256 680,268 666,280" fill="#34d399" />
   </g>
 
-  <!-- Column 3: Interaction & Storage Surfaces (x=660..920) -->
-  <rect x="660" y="90" width="260" height="350" rx="14" fill="url(#box3)" stroke="#06b6d4" stroke-width="1.5" />
-  <text x="790" y="125" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-weight="700" font-size="15" fill="#67e8f9" text-anchor="middle">3. Open Ecosystem</text>
 
-  <rect x="680" y="150" width="220" height="60" rx="8" fill="#083344" stroke="#0891b2" stroke-width="1" />
-  <text x="790" y="175" font-family="monospace" font-weight="700" font-size="12" fill="#cffafe" text-anchor="middle">Mind Orb Web Cockpit</text>
-  <text x="790" y="195" font-family="monospace" font-size="10" fill="#a5f3fc" text-anchor="middle">Zero-install HTML5 Canvas + SSE</text>
+  <!-- ===================================================================== -->
+  <!-- COLUMN 3: OPEN ECOSYSTEM (x=680..920, width=240)                      -->
+  <!-- ===================================================================== -->
+  <rect x="680" y="82" width="240" height="372" rx="14" fill="url(#col3Grad)" stroke="#06b6d4" stroke-width="1.5" />
+  <!-- Header Badge -->
+  <rect x="696" y="96" width="208" height="28" rx="6" fill="#0e4e68" fill-opacity="0.6" stroke="#0891b2" stroke-width="1" />
+  <text x="800" y="115" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-weight="700" font-size="13" fill="#a5f3fc" text-anchor="middle">3. Open Ecosystem</text>
 
-  <rect x="680" y="225" width="220" height="60" rx="8" fill="#083344" stroke="#0891b2" stroke-width="1" />
-  <text x="790" y="250" font-family="monospace" font-weight="700" font-size="12" fill="#cffafe" text-anchor="middle">Pluggable Storage</text>
-  <text x="790" y="270" font-family="monospace" font-size="10" fill="#a5f3fc" text-anchor="middle">SQLite, CSV, JSON, Webhooks</text>
+  <!-- Col 3 Item 1 -->
+  <rect x="696" y="136" width="208" height="64" rx="8" fill="url(#cardBg3)" stroke="#0891b2" stroke-width="1" />
+  <text x="800" y="161" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="700" font-size="12" fill="#cffafe" text-anchor="middle">Mind Orb Web Cockpit</text>
+  <text x="800" y="181" font-family="ui-monospace, SFMono-Regular, monospace" font-size="10" fill="#67e8f9" text-anchor="middle">WebGL Biofeedback Canvas + SSE</text>
 
-  <rect x="680" y="300" width="220" height="60" rx="8" fill="#083344" stroke="#0891b2" stroke-width="1" />
-  <text x="790" y="325" font-family="monospace" font-weight="700" font-size="12" fill="#cffafe" text-anchor="middle">Home Assistant &amp; MQTT</text>
-  <text x="790" y="345" font-family="monospace" font-size="10" fill="#a5f3fc" text-anchor="middle">Smart home biofeedback automations</text>
+  <!-- Col 3 Item 2 -->
+  <rect x="696" y="212" width="208" height="64" rx="8" fill="url(#cardBg3)" stroke="#0891b2" stroke-width="1" />
+  <text x="800" y="237" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="700" font-size="12" fill="#cffafe" text-anchor="middle">Pluggable Storage</text>
+  <text x="800" y="257" font-family="ui-monospace, SFMono-Regular, monospace" font-size="10" fill="#67e8f9" text-anchor="middle">SQLite, CSV, JSON &amp; Webhooks</text>
 
-  <rect x="680" y="375" width="220" height="45" rx="8" fill="#083344" stroke="#0891b2" stroke-width="1" />
-  <text x="790" y="402" font-family="monospace" font-size="11" fill="#38bdf8" text-anchor="middle">Fabric OS &amp; AI Agents (SDK)</text>
+  <!-- Col 3 Item 3 -->
+  <rect x="696" y="288" width="208" height="64" rx="8" fill="url(#cardBg3)" stroke="#0891b2" stroke-width="1" />
+  <text x="800" y="313" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="700" font-size="12" fill="#cffafe" text-anchor="middle">Home Assistant &amp; MQTT</text>
+  <text x="800" y="333" font-family="ui-monospace, SFMono-Regular, monospace" font-size="10" fill="#67e8f9" text-anchor="middle">Smart Home Biofeedback Automations</text>
+
+  <!-- Col 3 Item 4 -->
+  <rect x="696" y="364" width="208" height="64" rx="8" fill="url(#cardBg3)" stroke="#0891b2" stroke-width="1" />
+  <text x="800" y="389" font-family="ui-monospace, SFMono-Regular, monospace" font-weight="700" font-size="12" fill="#38bdf8" text-anchor="middle">Fabric OS &amp; AI Agents</text>
+  <text x="800" y="409" font-family="ui-monospace, SFMono-Regular, monospace" font-size="10" fill="#67e8f9" text-anchor="middle">Python SDK • Background Daemons</text>
 </svg>
