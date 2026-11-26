@@ -80,3 +80,47 @@ async def run_synthetic_stream(
         device.is_connected = False
         if on_telemetry:
             on_telemetry(device.build_snapshot())
+
+
+class SyntheticFociGenerator:
+    """
+    Synchronous step generator producing realistic synthetic FOCI snapshots.
+    Useful for synchronous unit tests, poller loops, and quick mocks.
+    """
+    def __init__(self, device: Optional[FociDevice] = None):
+        self.device = device or FociDevice()
+        self.device.is_connected = True
+        self.device.is_worn = True
+        self.device.battery_level = 94
+        self.device.battery_mv = 4120
+        self.device.device_name = "FOCI Virtual Clip"
+        self.states_cycle = ["flow", "focus", "calm", "focus", "flow", "calm", "stress"]
+        self.start_time = time.time()
+        self.phase = 0.0
+
+    def next_snapshot(self) -> Dict[str, Any]:
+        now = time.time()
+        elapsed = now - self.start_time
+        state_idx = int(elapsed // 45) % len(self.states_cycle)
+        self.device.current_mental_state = self.states_cycle[state_idx]
+
+        target_bpm = 13.0
+        if self.device.current_mental_state == "flow":
+            target_bpm = 10.5
+        elif self.device.current_mental_state == "calm":
+            target_bpm = 8.5
+        elif self.device.current_mental_state == "stress":
+            target_bpm = 22.0
+
+        freq_hz = target_bpm / 60.0
+        self.phase += 0.1 * 2.0 * math.pi * freq_hz
+        base_wave = 380.0 * math.sin(self.phase)
+        harmonic = 45.0 * math.sin(self.phase * 2.2)
+        noise = 12.0 * math.sin(now * 15.0)
+        signal = int(base_wave + harmonic + noise)
+
+        self.device.analyzer.add_sample(signal, now)
+        self.device.streak_duration = int(elapsed) % 900
+        self.device.streak_type = self.device.current_mental_state
+        return self.device.build_snapshot()
+

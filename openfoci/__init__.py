@@ -22,7 +22,7 @@ from openfoci.protocol import (
 )
 from openfoci.analyzer import RollingBreathAnalyzer
 from openfoci.client import FociDevice, FociBleDriver
-from openfoci.synthetic import run_synthetic_stream
+from openfoci.synthetic import run_synthetic_stream, SyntheticFociGenerator
 
 __all__ = [
     "__version__",
@@ -39,4 +39,5 @@ __all__ = [
     "FociDevice",
     "FociBleDriver",
     "run_synthetic_stream",
+    "SyntheticFociGenerator",
 ]

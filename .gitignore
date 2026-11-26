@@ -27,6 +27,15 @@ htmlcov/
 foci_telemetry.json
 data/
 
+# Android Tools & APK artifacts
+tools/*.apk
+tools/*.jar
+tools/*.idsig
+decompiled/
+*.apk
+*.jar
+*.idsig
+
 # Operating system artifacts
 .DS_Store
 Thumbs.db

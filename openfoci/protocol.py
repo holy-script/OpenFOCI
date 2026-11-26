@@ -317,8 +317,9 @@ def parse_realtime_data(payload: bytes) -> Dict[str, Any]:
         sub = payload[18:]
         if len(sub) >= 44:
             batt_mv = int.from_bytes(sub[4:6], byteorder="little")
-            out["battery_mv"] = batt_mv
-            out["battery_level"] = battery_mv_to_percentage(batt_mv)
+            if 3300 <= batt_mv <= 4300:
+                out["battery_mv"] = batt_mv
+                out["battery_level"] = battery_mv_to_percentage(batt_mv)
 
             # Firmware string (16 bytes)
             fw_bytes = sub[8:24]
