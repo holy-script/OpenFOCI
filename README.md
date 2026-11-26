@@ -2,6 +2,8 @@
 
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](LICENSE)
+[![PyPI](https://img.shields.io/badge/pypi-v0.1.0-blue.svg)](https://pypi.org/project/openfoci/)
+[![Release](https://img.shields.io/badge/release-v0.1.0-purple.svg)](https://github.com/holy-script/OpenFOCI/releases)
 [![Tests](https://img.shields.io/badge/tests-15%20passed-brightgreen.svg)](tests/)
 [![Architecture](https://img.shields.io/badge/architecture-local--first-cyan.svg)](#architecture)
 [![Hardware](https://img.shields.io/badge/hardware-Dialog%20DA14580%20ARM-indigo.svg)](docs/GATT_SPEC.md)
@@ -11,7 +13,7 @@ Open-source Bluetooth Low Energy (BLE) driver, real-time diaphragmatic respirati
 ---
 
 <p align="center">
-  <img src="assets/mind_orb_preview.svg" alt="OpenFOCI Mind Orb and 10 Hz Oscilloscope" width="100%" />
+  <img src="assets/mind_orb_cockpit.png" alt="OpenFOCI Mind Orb Cockpit" width="100%" />
 </p>
 
 ---
