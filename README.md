@@ -3,13 +3,10 @@
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](LICENSE)
 [![Tests](https://img.shields.io/badge/tests-15%20passed-brightgreen.svg)](tests/)
-[![Live Web Cockpit](https://img.shields.io/badge/Web%20Cockpit-Live%20on%20Vercel-blueviolet.svg)](https://web-phi-lac-37.vercel.app)
 [![Architecture](https://img.shields.io/badge/architecture-local--first-cyan.svg)](#architecture)
 [![Hardware](https://img.shields.io/badge/hardware-Dialog%20DA14580%20ARM-indigo.svg)](docs/GATT_SPEC.md)
 
 Open-source Bluetooth Low Energy (BLE) driver, real-time diaphragmatic respiration telemetry engine, and local-first **Mind Orb** biofeedback visualizer for **FOCI** and **FOCI 2** biometric wearables.
-
-**Live Interactive Web Cockpit:** [https://web-phi-lac-37.vercel.app](https://web-phi-lac-37.vercel.app)
 
 ---
 
@@ -30,7 +27,9 @@ Following company dissolution in September 2025 ([UK Companies House #08954266](
 1. **On-Device Inference**: Digital signal processing (DSP), zero-crossing respiration rate computation, autoregressive motion parameters (AR1/AR3), and mental state classifications execute directly on the wearable's **Dialog Semiconductor DA14580 Cortex-M0 SoC**. Cloud endpoints served solely as an account/licensing check.
 2. **WeChat AirSync Profile**: The peripheral advertises standard GATT Service `0xFEE7` and uses standard AirSync framing with a 4-byte CRC32 challenge.
 3. **Cryptographic WriteKey Derivation**: Device authorization requires a 32-bit key computed from:
-   $$\text{writeKey} = \text{MD5}\left(\text{UID} + \text{"3BF608C70828"} + \text{reversed\_mac\_hex}\right)[:4]$$
+   ```text
+   writeKey = MD5(UID + "3BF608C70828" + reversed_mac_hex)[:4]
+   ```
 4. **Hardware Interface**: The physical magnetic cradle exposes only two contacts (+5V and GND) for charging. All diagnostic and data exchange must occur over BLE.
 
 **OpenFOCI** restores full utility to this hardware without proprietary cloud intermediaries. It negotiates the BLE authentication handshake, streams raw 10 Hz diaphragmatic waveforms, and exposes modern visualization and data interfaces.
@@ -124,7 +123,7 @@ Run the local web dashboard and SSE stream:
 openfoci serve --port 8080
 ```
 
-Open [http://localhost:8080](http://localhost:8080) to inspect the live fluid Mind Orb and real-time 10 Hz oscilloscope, or explore the hosted dashboard directly at [https://web-phi-lac-37.vercel.app](https://web-phi-lac-37.vercel.app).
+Open [http://localhost:8080](http://localhost:8080) to inspect the live fluid Mind Orb and real-time 10 Hz oscilloscope.
 
 ---
 

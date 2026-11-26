@@ -1,30 +1,53 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" width="100%" height="100%">
   <defs>
     <!-- Background Gradient -->
     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#030712" />
-      <stop offset="50%" stop-color="#0b0f19" />
+      <stop offset="50%" stop-color="#070c18" />
       <stop offset="100%" stop-color="#02040a" />
     </linearGradient>
 
-    <!-- Card Background -->
-    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#111827" stop-opacity="0.8" />
-      <stop offset="100%" stop-color="#1f2937" stop-opacity="0.4" />
+    <!-- Glass Panel Gradient -->
+    <linearGradient id="glassGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#111827" stop-opacity="0.75" />
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.45" />
     </linearGradient>
 
-    <!-- Orb Core Fluid Gradient -->
-    <radialGradient id="orbGlow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9" />
-      <stop offset="25%" stop-color="#38bdf8" stop-opacity="0.85" />
-      <stop offset="55%" stop-color="#0284c7" stop-opacity="0.6" />
-      <stop offset="85%" stop-color="#a855f7" stop-opacity="0.3" />
-      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+    <!-- 3D Specular Liquid Orb Gradients -->
+    <radialGradient id="orbBacklight" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.35" />
+      <stop offset="40%" stop-color="#3b82f6" stop-opacity="0.2" />
+      <stop offset="70%" stop-color="#8b5cf6" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#030712" stop-opacity="0" />
     </radialGradient>
 
+    <radialGradient id="orbCore" cx="42%" cy="38%" r="62%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95" />
+      <stop offset="12%" stop-color="#a5f3fc" stop-opacity="0.9" />
+      <stop offset="28%" stop-color="#06b6d4" stop-opacity="0.85" />
+      <stop offset="58%" stop-color="#2563eb" stop-opacity="0.7" />
+      <stop offset="82%" stop-color="#4f46e5" stop-opacity="0.55" />
+      <stop offset="100%" stop-color="#1e1b4b" stop-opacity="0.4" />
+    </radialGradient>
+
+    <!-- Specular Highlight for 3D Crests -->
+    <linearGradient id="specularKey" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.8" />
+      <stop offset="50%" stop-color="#cffafe" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#38bdf8" stop-opacity="0" />
+    </linearGradient>
+
     <!-- Waveform Glow Filter -->
-    <filter id="cyanGlow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="3" result="blur" />
+    <filter id="neonCyan" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3.5" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="16" result="blur" />
       <feMerge>
         <feMergeNode in="blur" />
         <feMergeNode in="SourceGraphic" />
@@ -32,74 +55,151 @@
     </filter>
   </defs>
 
-  <!-- Canvas Background -->
-  <rect width="900" height="520" rx="16" fill="url(#bgGrad)" stroke="#374151" stroke-width="1.5" />
+  <!-- Canvas Frame -->
+  <rect width="1000" height="600" rx="20" fill="url(#bgGrad)" stroke="#1e293b" stroke-width="1.5" />
 
-  <!-- Top Hardware Navigation Bar -->
-  <rect x="24" y="20" width="852" height="56" rx="12" fill="url(#cardGrad)" stroke="#374151" stroke-width="1" />
-  <text x="44" y="55" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="20">🫁</text>
-  <text x="74" y="47" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="700" font-size="16" fill="#f9fafb">OpenFOCI Mind Orb</text>
+  <!-- Top Glass Header -->
+  <rect x="28" y="24" width="944" height="62" rx="14" fill="url(#glassGrad)" stroke="rgba(255,255,255,0.08)" stroke-width="1" />
   
-  <rect x="230" y="34" width="76" height="20" rx="10" fill="#065f46" fill-opacity="0.5" stroke="#10b981" stroke-width="1" />
-  <text x="242" y="48" font-family="monospace" font-size="10" font-weight="700" fill="#34d399">LIVE BLE</text>
-
-  <text x="74" y="63" font-family="monospace" font-size="11" fill="#9ca3af">FOCI 78 • Firmware 2.0.7.0 • MAC A4:11:63:E0:7E:87</text>
-
-  <!-- Top Right Stats -->
-  <text x="730" y="42" font-family="monospace" font-size="10" fill="#6b7280" text-anchor="end">BATTERY</text>
-  <text x="730" y="60" font-family="monospace" font-size="14" font-weight="700" fill="#34d399" text-anchor="end">88% (3900 mV)</text>
-
-  <text x="850" y="42" font-family="monospace" font-size="10" fill="#6b7280" text-anchor="end">WEAR STATE</text>
-  <text x="850" y="60" font-family="monospace" font-size="14" font-weight="700" fill="#38bdf8" text-anchor="end">WAIST WORN</text>
-
-  <!-- Center Mind Orb -->
-  <circle cx="450" cy="180" r="100" fill="#0284c7" fill-opacity="0.15" filter="url(#cyanGlow)" />
-  <circle cx="450" cy="180" r="75" fill="url(#orbGlow)" filter="url(#cyanGlow)" />
+  <rect x="44" y="39" width="32" height="32" rx="8" fill="#0891b2" fill-opacity="0.25" stroke="#06b6d4" stroke-width="1.2" />
+  <path d="M52 55 L57 47 L62 59 L65 52 L68 55" fill="none" stroke="#22d3ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
   
-  <!-- Outer Breathing Fluid Waves -->
-  <circle cx="450" cy="180" r="92" fill="none" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="8 4" opacity="0.6" />
-  <circle cx="450" cy="180" r="82" fill="none" stroke="#a855f7" stroke-width="2" opacity="0.8" />
+  <text x="86" y="54" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="700" font-size="16" fill="#f8fafc">OpenFOCI Mind Orb Cockpit</text>
+  <text x="86" y="70" font-family="monospace" font-size="11" fill="#94a3b8">FOCI 78 • Dialog DA14580 SoC • Firmware 2.0.7.0</text>
 
-  <!-- Center Metric Overlay -->
-  <rect x="405" y="145" width="90" height="20" rx="10" fill="#000000" fill-opacity="0.75" stroke="#38bdf8" stroke-width="1" />
-  <text x="450" y="159" font-family="monospace" font-size="10" font-weight="700" fill="#38bdf8" text-anchor="middle">DEEP FLOW</text>
-  <text x="450" y="198" font-family="monospace" font-size="34" font-weight="800" fill="#ffffff" text-anchor="middle">14.0</text>
-  <text x="450" y="213" font-family="monospace" font-size="9" fill="#9ca3af" text-anchor="middle">BREATHS / MIN</text>
+  <!-- Live Status Badge -->
+  <rect x="306" y="45" width="82" height="20" rx="10" fill="#065f46" fill-opacity="0.4" stroke="#10b981" stroke-width="1" />
+  <circle cx="316" cy="55" r="3.5" fill="#34d399" />
+  <text x="326" y="59" font-family="monospace" font-size="10" font-weight="700" fill="#34d399">CONNECTED</text>
 
-  <!-- 10 Hz Diaphragmatic Waveform Card -->
-  <rect x="24" y="295" width="852" height="95" rx="12" fill="url(#cardGrad)" stroke="#374151" stroke-width="1" />
-  <text x="44" y="318" font-family="monospace" font-size="11" fill="#9ca3af">DIAPHRAGMATIC RESPIRATION WAVEFORM (10 HZ STREAM)</text>
-  <text x="855" y="318" font-family="monospace" font-size="11" font-weight="700" fill="#34d399" text-anchor="end">COHERENCE: 85%</text>
+  <!-- Header Right Vitals -->
+  <text x="840" y="49" font-family="monospace" font-size="10" fill="#64748b" text-anchor="end">BATTERY STATUS</text>
+  <text x="840" y="69" font-family="monospace" font-size="14" font-weight="700" fill="#34d399" text-anchor="end">88% (3900 mV)</text>
 
-  <!-- Respiration Sinusoid Path -->
-  <path d="M 44 355 C 80 325, 110 325, 145 355 C 180 385, 210 385, 245 355 C 280 320, 310 320, 345 355 C 380 390, 410 390, 445 355 C 480 315, 510 315, 545 355 C 580 395, 610 395, 645 355 C 680 325, 710 325, 745 355 C 780 385, 810 385, 855 355"
-        fill="none" stroke="#38bdf8" stroke-width="2.5" filter="url(#cyanGlow)" />
+  <text x="948" y="49" font-family="monospace" font-size="10" fill="#64748b" text-anchor="end">PLACEMENT</text>
+  <text x="948" y="69" font-family="monospace" font-size="14" font-weight="700" fill="#38bdf8" text-anchor="end">WAIST WORN</text>
 
-  <!-- Bottom Metric Cards -->
-  <!-- Card 1: Coherence -->
-  <rect x="24" y="405" width="200" height="95" rx="12" fill="url(#cardGrad)" stroke="#374151" stroke-width="1" />
-  <text x="40" y="428" font-family="monospace" font-size="10" fill="#6b7280">FLUIDITY / COHERENCE</text>
-  <text x="40" y="460" font-family="monospace" font-size="24" font-weight="700" fill="#f9fafb">85%</text>
-  <rect x="40" y="475" width="168" height="6" rx="3" fill="#1f2937" />
-  <rect x="40" y="475" width="142" height="6" rx="3" fill="#34d399" />
+  <!-- Central Ambient Radial Glow -->
+  <circle cx="500" cy="245" r="170" fill="url(#orbBacklight)" />
 
-  <!-- Card 2: Diaphragm Depth -->
-  <rect x="241" y="405" width="200" height="95" rx="12" fill="url(#cardGrad)" stroke="#374151" stroke-width="1" />
-  <text x="257" y="428" font-family="monospace" font-size="10" fill="#6b7280">DIAPHRAGM DEPTH</text>
-  <text x="257" y="460" font-family="monospace" font-size="24" font-weight="700" fill="#f9fafb">70%</text>
-  <rect x="257" y="475" width="168" height="6" rx="3" fill="#1f2937" />
-  <rect x="257" y="475" width="117" height="6" rx="3" fill="#38bdf8" />
+  <!-- 3D Displaced Fluid Orb Structure -->
+  <!-- Back Fluid Ripples -->
+  <path d="M375 220 Q440 140 500 150 Q580 160 620 230 Q650 310 570 330 Q490 350 420 310 Q350 270 375 220 Z" 
+        fill="none" stroke="#0ea5e9" stroke-width="1.8" stroke-opacity="0.35" stroke-dasharray="6 3" />
 
-  <!-- Card 3: Streak -->
-  <rect x="458" y="405" width="200" height="95" rx="12" fill="url(#cardGrad)" stroke="#374151" stroke-width="1" />
-  <text x="474" y="428" font-family="monospace" font-size="10" fill="#6b7280">STREAK DURATION</text>
-  <text x="474" y="460" font-family="monospace" font-size="24" font-weight="700" fill="#c084fc">25m</text>
-  <text x="474" y="482" font-family="monospace" font-size="10" fill="#9ca3af">Deep Focus Streak</text>
+  <path d="M360 250 Q430 170 510 165 Q600 180 635 250 Q640 330 550 345 Q470 360 400 320 Q340 280 360 250 Z" 
+        fill="none" stroke="#6366f1" stroke-width="1.5" stroke-opacity="0.4" />
 
-  <!-- Card 4: Pluggable Storage Targets -->
-  <rect x="675" y="405" width="201" height="95" rx="12" fill="url(#cardGrad)" stroke="#374151" stroke-width="1" />
-  <text x="691" y="428" font-family="monospace" font-size="10" fill="#6b7280">STORAGE DISPATCH</text>
-  <text x="691" y="455" font-family="monospace" font-size="12" font-weight="700" fill="#34d399">🟢 SQLite / CSV</text>
-  <text x="691" y="473" font-family="monospace" font-size="12" font-weight="700" fill="#38bdf8">🟢 Webhook / REST</text>
-  <text x="691" y="490" font-family="monospace" font-size="10" fill="#9ca3af">Zero Cloud Lock-in</text>
+  <!-- Main 3D Fluid Sphere Base -->
+  <circle cx="500" cy="245" r="95" fill="url(#orbCore)" filter="url(#softGlow)" />
+
+  <!-- Front 3D Surface Ripple Waves & Curvature (Gives intense 3D wave depth in center) -->
+  <path d="M430 205 Q470 185 520 195 Q570 205 565 240 Q550 280 495 285 Q445 290 435 250 Q425 220 430 205 Z" 
+        fill="#0891b2" fill-opacity="0.4" />
+
+  <path d="M450 220 Q485 200 525 210 Q550 230 535 260 Q500 275 470 265 Q445 250 450 220 Z" 
+        fill="#38bdf8" fill-opacity="0.55" />
+
+  <!-- Specular 3D Shimmer Crests on Front Face -->
+  <ellipse cx="465" cy="215" rx="38" ry="20" transform="rotate(-18 465 215)" fill="url(#specularKey)" />
+  <ellipse cx="452" cy="205" rx="14" ry="7" transform="rotate(-22 452 205)" fill="#ffffff" fill-opacity="0.85" filter="url(#neonCyan)" />
+  <circle cx="530" cy="235" r="8" fill="#ffffff" fill-opacity="0.4" />
+  <circle cx="490" cy="255" r="5" fill="#a5f3fc" fill-opacity="0.5" />
+
+  <!-- Central State Pill Overlay -->
+  <rect x="444" y="222" width="112" height="28" rx="14" fill="#030712" fill-opacity="0.85" stroke="#06b6d4" stroke-width="1.2" />
+  <text x="500" y="240" font-family="monospace" font-size="11" font-weight="700" fill="#22d3ee" text-anchor="middle" letter-spacing="2">FLOW STATE</text>
+  
+  <text x="500" y="280" font-family="monospace" font-size="28" font-weight="800" fill="#ffffff" text-anchor="middle" filter="url(#neonCyan)">14.0</text>
+  <text x="500" y="296" font-family="monospace" font-size="10" font-weight="600" fill="#94a3b8" text-anchor="middle" letter-spacing="1">BREATHS / MIN</text>
+
+  <!-- Left Metrics Cards -->
+  <g transform="translate(28, 110)">
+    <!-- Metric 1: Respiration -->
+    <rect x="0" y="0" width="220" height="96" rx="12" fill="url(#glassGrad)" stroke="rgba(255,255,255,0.07)" stroke-width="1" />
+    <text x="16" y="26" font-family="monospace" font-size="10" font-weight="600" fill="#64748b" letter-spacing="1">RESPIRATION RATE</text>
+    <text x="16" y="60" font-family="monospace" font-size="24" font-weight="800" fill="#ffffff">14.0 <tspan font-size="12" fill="#64748b">BPM</tspan></text>
+    <text x="16" y="80" font-family="monospace" font-size="10" fill="#06b6d4">Zero-crossing rate</text>
+    <line x1="0" y1="95" x2="220" y2="95" stroke="#06b6d4" stroke-width="2" stroke-opacity="0.8" />
+
+    <!-- Metric 2: Rhythm Coherence -->
+    <rect x="0" y="112" width="220" height="96" rx="12" fill="url(#glassGrad)" stroke="rgba(255,255,255,0.07)" stroke-width="1" />
+    <text x="16" y="138" font-family="monospace" font-size="10" font-weight="600" fill="#64748b" letter-spacing="1">RHYTHM COHERENCE</text>
+    <text x="16" y="172" font-family="monospace" font-size="24" font-weight="800" fill="#ffffff">85% <tspan font-size="12" fill="#64748b">INDEX</tspan></text>
+    <text x="16" y="192" font-family="monospace" font-size="10" fill="#a855f7">Inter-breath regularity</text>
+    <line x1="0" y1="207" x2="220" y2="207" stroke="#8b5cf6" stroke-width="2" stroke-opacity="0.8" />
+
+    <!-- Metric 3: Excursion Depth -->
+    <rect x="0" y="224" width="220" height="96" rx="12" fill="url(#glassGrad)" stroke="rgba(255,255,255,0.07)" stroke-width="1" />
+    <text x="16" y="250" font-family="monospace" font-size="10" font-weight="600" fill="#64748b" letter-spacing="1">DIAPHRAGMATIC DEPTH</text>
+    <text x="16" y="284" font-family="monospace" font-size="24" font-weight="800" fill="#ffffff">72% <tspan font-size="12" fill="#64748b">DEPTH</tspan></text>
+    <text x="16" y="304" font-family="monospace" font-size="10" fill="#10b981">Abdominal excursion</text>
+    <line x1="0" y1="319" x2="220" y2="319" stroke="#10b981" stroke-width="2" stroke-opacity="0.8" />
+  </g>
+
+  <!-- Right Cards: Physical States -->
+  <g transform="translate(752, 110)">
+    <!-- Metric 4: Battery -->
+    <rect x="0" y="0" width="220" height="96" rx="12" fill="url(#glassGrad)" stroke="rgba(255,255,255,0.07)" stroke-width="1" />
+    <text x="16" y="26" font-family="monospace" font-size="10" font-weight="600" fill="#64748b" letter-spacing="1">BATTERY HEALTH</text>
+    <text x="16" y="60" font-family="monospace" font-size="24" font-weight="800" fill="#ffffff">88% <tspan font-size="12" fill="#64748b">3900 mV</tspan></text>
+    <text x="16" y="80" font-family="monospace" font-size="10" fill="#10b981">Nominal Li-Po cell</text>
+    <line x1="0" y1="95" x2="220" y2="95" stroke="#10b981" stroke-width="2" stroke-opacity="0.8" />
+
+    <!-- Metric 5: Streak Timer -->
+    <rect x="0" y="112" width="220" height="96" rx="12" fill="url(#glassGrad)" stroke="rgba(255,255,255,0.07)" stroke-width="1" />
+    <text x="16" y="138" font-family="monospace" font-size="10" font-weight="600" fill="#64748b" letter-spacing="1">CURRENT STREAK</text>
+    <text x="16" y="172" font-family="monospace" font-size="24" font-weight="800" fill="#ffffff">28m <tspan font-size="12" fill="#64748b">FLOW</tspan></text>
+    <text x="16" y="192" font-family="monospace" font-size="10" fill="#f59e0b">Deep work streak</text>
+    <line x1="0" y1="207" x2="220" y2="207" stroke="#f59e0b" stroke-width="2" stroke-opacity="0.8" />
+
+    <!-- Metric 6: Hardware Status -->
+    <rect x="0" y="224" width="220" height="96" rx="12" fill="url(#glassGrad)" stroke="rgba(255,255,255,0.07)" stroke-width="1" />
+    <text x="16" y="250" font-family="monospace" font-size="10" font-weight="600" fill="#64748b" letter-spacing="1">HARDWARE LINK</text>
+    <text x="16" y="284" font-family="monospace" font-size="20" font-weight="800" fill="#38bdf8">AIRSYNC BLE</text>
+    <text x="16" y="304" font-family="monospace" font-size="10" fill="#06b6d4">Service 0xFEE7 Active</text>
+    <line x1="0" y1="319" x2="220" y2="319" stroke="#06b6d4" stroke-width="2" stroke-opacity="0.8" />
+  </g>
+
+  <!-- Bottom 10 Hz Real-Time Oscilloscope Panel -->
+  <g transform="translate(28, 450)">
+    <rect x="0" y="0" width="944" height="126" rx="14" fill="url(#glassGrad)" stroke="rgba(255,255,255,0.08)" stroke-width="1" />
+    
+    <text x="20" y="26" font-family="monospace" font-size="10" font-weight="700" fill="#22d3ee" letter-spacing="1.5">10 HZ DIAPHRAGMATIC OSCILLOSCOPE</text>
+    <text x="924" y="26" font-family="monospace" font-size="10" fill="#64748b" text-anchor="end">PEAK-TO-TROUGH EXCURSION</text>
+
+    <!-- Oscilloscope Grid Lines -->
+    <line x1="20" y1="75" x2="924" y2="75" stroke="rgba(255,255,255,0.12)" stroke-width="1" stroke-dasharray="4 4" />
+
+    <!-- Waveform Path: 10 Hz Sinusoidal Respiratory Trace -->
+    <path d="M 20 75
+             C 60 75, 80 40, 110 40
+             C 140 40, 160 110, 190 110
+             C 220 110, 240 42, 270 42
+             C 300 42, 320 108, 350 108
+             C 380 108, 400 38, 430 38
+             C 460 38, 480 112, 510 112
+             C 540 112, 560 40, 590 40
+             C 620 40, 640 110, 670 110
+             C 700 110, 720 42, 750 42
+             C 780 42, 800 108, 830 108
+             C 860 108, 880 50, 924 75"
+          fill="none" stroke="#06b6d4" stroke-width="2.5" filter="url(#neonCyan)" />
+
+    <!-- Semi-transparent area fill under curve -->
+    <path d="M 20 75
+             C 60 75, 80 40, 110 40
+             C 140 40, 160 110, 190 110
+             C 220 110, 240 42, 270 42
+             C 300 42, 320 108, 350 108
+             C 380 108, 400 38, 430 38
+             C 460 38, 480 112, 510 112
+             C 540 112, 560 40, 590 40
+             C 620 40, 640 110, 670 110
+             C 700 110, 720 42, 750 42
+             C 780 42, 800 108, 830 108
+             C 860 108, 880 50, 924 75
+             L 924 116 L 20 116 Z"
+          fill="#06b6d4" fill-opacity="0.08" />
+  </g>
 </svg>

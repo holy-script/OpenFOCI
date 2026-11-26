@@ -10,19 +10,23 @@ interface MindOrb3DProps {
   breathPhase?: number;    // 0 - 1 phase of current breath cycle
   isWorn: boolean;
   className?: string;
+  size?: number;
 }
 
-// State color schemes (Primary, Secondary, Ambient)
-const STATE_COLORS: Record<string, { primary: string; secondary: string; ambient: string }> = {
-  flow: { primary: '#06b6d4', secondary: '#3b82f6', ambient: '#083344' },
-  focus: { primary: '#8b5cf6', secondary: '#6366f1', ambient: '#2e1065' },
-  calm: { primary: '#10b981', secondary: '#059669', ambient: '#064e3b' },
-  stress: { primary: '#ef4444', secondary: '#f97316', ambient: '#450a0a' },
-  distracted: { primary: '#f59e0b', secondary: '#eab308', ambient: '#451a03' },
-  not_worn: { primary: '#64748b', secondary: '#475569', ambient: '#0f172a' },
+// State color schemes (Primary, Secondary, Ambient, Specular)
+const STATE_COLORS: Record<
+  string,
+  { primary: string; secondary: string; ambient: string; specular: string }
+> = {
+  flow: { primary: '#06b6d4', secondary: '#3b82f6', ambient: '#041c2c', specular: '#e0f2fe' },
+  focus: { primary: '#8b5cf6', secondary: '#6366f1', ambient: '#1e0b4b', specular: '#ede9fe' },
+  calm: { primary: '#10b981', secondary: '#059669', ambient: '#04281f', specular: '#d1fae5' },
+  stress: { primary: '#ef4444', secondary: '#f97316', ambient: '#3b0808', specular: '#fee2e2' },
+  distracted: { primary: '#f59e0b', secondary: '#eab308', ambient: '#381602', specular: '#fef3c7' },
+  not_worn: { primary: '#64748b', secondary: '#475569', ambient: '#0f172a', specular: '#cbd5e1' },
 };
 
-// GLSL Vertex Shader: Dynamic 3D procedural noise displacement
+// GLSL Vertex Shader: Dynamic 3D procedural noise displacement with recomputed normals
 const vertexShader = `
   uniform float uTime;
   uniform float uBreathPhase;
@@ -31,9 +35,10 @@ const vertexShader = `
 
   varying vec3 vNormal;
   varying vec3 vPosition;
+  varying vec3 vWorldNormal;
   varying float vDisplacement;
 
-  // Classic 3D Perlin Noise simplex generator
+  // Classic 3D Simplex Noise
   vec4 permute(vec4 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
   vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
 
@@ -83,59 +88,114 @@ const vertexShader = `
     return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
   }
 
+  // Multi-octave 3D fluid displacement function
+  float getDisplacement(vec3 pos) {
+    float speed = 0.7;
+    // Primary large wave
+    float n1 = snoise(pos * 1.6 + vec3(uTime * speed * 0.8));
+    // Secondary medium ripple
+    float n2 = snoise(pos * 3.2 - vec3(uTime * speed * 0.5)) * 0.5;
+    // High-frequency capillary liquid ripple across the surface
+    float n3 = snoise(pos * 6.4 + vec3(uTime * speed * 1.2)) * 0.25;
+
+    return (n1 + n2 + n3) * uDistortion;
+  }
+
   void main() {
-    vNormal = normalize(normalMatrix * normal);
-    vPosition = position;
-
-    // Harmonic multi-octave turbulence
-    float speed = 0.8;
-    float noise1 = snoise(position * 1.5 + vec3(uTime * speed));
-    float noise2 = snoise(position * 3.0 - vec3(uTime * speed * 0.5)) * 0.5;
-    float displacement = (noise1 + noise2) * uDistortion;
-
-    // Diaphragmatic respiratory excursion: rhythmic breathing expansion
-    float breathScale = 1.0 + (sin(uBreathPhase) * 0.12 * (uFluidity / 100.0));
-    
-    vec3 newPosition = position * breathScale + normal * displacement;
+    float displacement = getDisplacement(position);
     vDisplacement = displacement;
 
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
+    // Diaphragmatic respiratory rhythm expansion
+    float breathScale = 1.0 + (sin(uBreathPhase) * 0.14 * (uFluidity / 100.0));
+    vec3 displacedPosition = position * breathScale + normal * displacement;
+
+    // Tangent space finite difference to calculate real displaced surface normal
+    float eps = 0.01;
+    // Generate two orthogonal tangent vectors
+    vec3 tangent = normalize(abs(normal.y) < 0.999 ? cross(normal, vec3(0.0, 1.0, 0.0)) : cross(normal, vec3(1.0, 0.0, 0.0)));
+    vec3 bitangent = cross(normal, tangent);
+
+    vec3 p1 = (position + tangent * eps) * breathScale + normal * getDisplacement(position + tangent * eps);
+    vec3 p2 = (position + bitangent * eps) * breathScale + normal * getDisplacement(position + bitangent * eps);
+
+    vec3 calculatedNormal = normalize(cross(p1 - displacedPosition, p2 - displacedPosition));
+
+    vNormal = normalize(normalMatrix * calculatedNormal);
+    vWorldNormal = (modelMatrix * vec4(calculatedNormal, 0.0)).xyz;
+    vPosition = (modelViewMatrix * vec4(displacedPosition, 1.0)).xyz;
+
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(displacedPosition, 1.0);
   }
 `;
 
-// GLSL Fragment Shader: Chromatic refraction, fresnel edge glow, and inner depth
+// GLSL Fragment Shader: Multi-source directional lighting, Blinn-Phong specular, subsurface depth
 const fragmentShader = `
   uniform vec3 uColorPrimary;
   uniform vec3 uColorSecondary;
   uniform vec3 uColorAmbient;
+  uniform vec3 uColorSpecular;
   uniform float uTime;
   uniform float uIsWorn;
 
   varying vec3 vNormal;
   varying vec3 vPosition;
+  varying vec3 vWorldNormal;
   varying float vDisplacement;
 
   void main() {
-    // View direction relative to camera
     vec3 viewDir = normalize(-vPosition);
-    
-    // Fresnel rim glow effect
-    float fresnel = pow(1.0 - max(dot(viewDir, vNormal), 0.0), 2.8);
-    
-    // Chromatic depth gradient across displacement
-    float mixFactor = smoothstep(-0.25, 0.35, vDisplacement);
-    vec3 baseColor = mix(uColorPrimary, uColorSecondary, mixFactor);
-    
-    // Dynamic inner luminescence
-    float pulse = sin(uTime * 1.5) * 0.08 + 0.92;
-    vec3 finalColor = mix(uColorAmbient, baseColor, pulse) + (uColorPrimary * fresnel * 1.4);
+    vec3 normal = normalize(vNormal);
+
+    // 1. Multi-Directional Lighting Sources in View Space
+    // Key light (top-right, bright, creates crest highlights across the center)
+    vec3 keyLightDir = normalize(vec3(0.8, 1.2, 1.5));
+    // Fill light (bottom-left, soft cool balance)
+    vec3 fillLightDir = normalize(vec3(-1.0, -0.6, 0.8));
+    // Backlight / Rim
+    vec3 backLightDir = normalize(vec3(0.0, 0.0, -1.0));
+
+    // 2. Diffuse Lighting Calculations
+    float diffKey = max(dot(normal, keyLightDir), 0.0);
+    float diffFill = max(dot(normal, fillLightDir), 0.0) * 0.45;
+    float diffuse = diffKey + diffFill;
+
+    // 3. Blinn-Phong Specular Shimmer across fluid waves (critical for 3D depth in center!)
+    vec3 halfVector = normalize(keyLightDir + viewDir);
+    float specAngle = max(dot(normal, halfVector), 0.0);
+    float specular = pow(specAngle, 40.0) * 1.5;
+
+    // Secondary specular highlight from fill light
+    vec3 halfFill = normalize(fillLightDir + viewDir);
+    float specularFill = pow(max(dot(normal, halfFill), 0.0), 24.0) * 0.4;
+
+    // 4. Fresnel Rim Glow
+    float fresnel = pow(1.0 - max(dot(viewDir, normal), 0.0), 3.0);
+
+    // 5. Chromatic Color Layering based on wave elevation
+    // Valleys are deeper and darker ambient; Peaks are vibrant and bright
+    float elevation = smoothstep(-0.35, 0.4, vDisplacement);
+    vec3 waveColor = mix(uColorAmbient, uColorSecondary, elevation * 0.7);
+    waveColor = mix(waveColor, uColorPrimary, smoothstep(0.0, 0.5, vDisplacement));
+
+    // Combine diffuse shading with wave color
+    vec3 surfaceColor = waveColor * (0.35 + diffuse * 0.85);
+
+    // Add bright specular shimmers across surface ripples
+    surfaceColor += uColorSpecular * (specular + specularFill);
+
+    // Add fresnel rim reflection
+    surfaceColor += uColorPrimary * fresnel * 1.2;
+
+    // Dynamic inner core luminescence pulse
+    float corePulse = sin(uTime * 2.0) * 0.08 + 0.92;
+    surfaceColor *= corePulse;
 
     if (uIsWorn < 0.5) {
-      // Dimmed resting state when not clipped to waistband
-      finalColor = mix(finalColor, vec3(0.2, 0.25, 0.3), 0.6) * 0.7;
+      // Dimmed resting state when unclipped
+      surfaceColor = mix(surfaceColor, vec3(0.15, 0.2, 0.25), 0.7) * 0.6;
     }
 
-    gl_FragColor = vec4(finalColor, 0.92);
+    gl_FragColor = vec4(surfaceColor, 0.95);
   }
 `;
 
@@ -146,6 +206,7 @@ export const MindOrb3D: React.FC<MindOrb3DProps> = ({
   breathPhase,
   isWorn,
   className = '',
+  size,
 }) => {
   const mountRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
@@ -154,21 +215,20 @@ export const MindOrb3D: React.FC<MindOrb3DProps> = ({
   const animFrameRef = useRef<number>(0);
   const isRenderingRef = useRef<boolean>(true);
 
-  // Parse target color scheme
   const colors = STATE_COLORS[mentalState.toLowerCase()] || STATE_COLORS.flow;
 
   useEffect(() => {
     if (!mountRef.current) return;
 
-    const width = mountRef.current.clientWidth || 320;
-    const height = mountRef.current.clientHeight || 320;
+    const width = size || mountRef.current.clientWidth || 340;
+    const height = size || mountRef.current.clientHeight || 340;
 
     // 1. Scene & Camera setup
     const scene = new THREE.Scene();
     sceneRef.current = scene;
 
-    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-    camera.position.z = 3.6;
+    const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 100);
+    camera.position.z = 3.4;
 
     // 2. WebGL Renderer with antialiasing
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'high-performance' });
@@ -177,22 +237,23 @@ export const MindOrb3D: React.FC<MindOrb3DProps> = ({
     mountRef.current.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
-    // 3. High-resolution Icosahedron mesh
-    const geometry = new THREE.IcosahedronGeometry(1.0, 64);
+    // 3. High-resolution Icosahedron mesh for silky smooth liquid waves
+    const geometry = new THREE.IcosahedronGeometry(1.0, 80);
 
-    // 4. Custom Shader Material
+    // 4. Custom Shader Material with full 3D lighting uniforms
     const material = new THREE.ShaderMaterial({
       vertexShader,
       fragmentShader,
       uniforms: {
         uTime: { value: 0 },
         uBreathPhase: { value: 0 },
-        uDistortion: { value: 0.16 },
+        uDistortion: { value: 0.22 }, // Increased distortion for distinct wave peaks
         uFluidity: { value: 85.0 },
         uIsWorn: { value: 1.0 },
         uColorPrimary: { value: new THREE.Color(colors.primary) },
         uColorSecondary: { value: new THREE.Color(colors.secondary) },
         uColorAmbient: { value: new THREE.Color(colors.ambient) },
+        uColorSpecular: { value: new THREE.Color(colors.specular) },
       },
       transparent: true,
       side: THREE.FrontSide,
@@ -203,7 +264,7 @@ export const MindOrb3D: React.FC<MindOrb3DProps> = ({
     scene.add(mesh);
 
     // 5. Animation loop
-    let clock = new THREE.Clock();
+    const clock = new THREE.Clock();
     let localBreath = 0;
 
     const animate = () => {
@@ -211,8 +272,6 @@ export const MindOrb3D: React.FC<MindOrb3DProps> = ({
       animFrameRef.current = requestAnimationFrame(animate);
 
       const elapsed = clock.getElapsedTime();
-      
-      // Update breathing cycle rate
       const bpm = respirationRate || 14.0;
       const breathSpeed = (bpm / 60.0) * Math.PI * 2.0;
       localBreath += 0.016 * breathSpeed;
@@ -222,9 +281,10 @@ export const MindOrb3D: React.FC<MindOrb3DProps> = ({
         materialRef.current.uniforms.uBreathPhase.value = breathPhase !== undefined ? breathPhase : localBreath;
       }
 
-      // Smooth slow rotational drift
-      mesh.rotation.y = elapsed * 0.15;
-      mesh.rotation.x = Math.sin(elapsed * 0.1) * 0.1;
+      // Smooth 3D slow rotational drift
+      mesh.rotation.y = elapsed * 0.18;
+      mesh.rotation.x = Math.sin(elapsed * 0.12) * 0.15;
+      mesh.rotation.z = Math.cos(elapsed * 0.08) * 0.08;
 
       renderer.render(scene, camera);
     };
@@ -232,7 +292,6 @@ export const MindOrb3D: React.FC<MindOrb3DProps> = ({
     animate();
 
     // 6. Modern Web Guidance: Efficient Background Processing
-    // Pause rendering when scrolled out of view or tab inactive
     const handleVisibilityChange = () => {
       if (document.hidden) {
         isRenderingRef.current = false;
@@ -266,11 +325,10 @@ export const MindOrb3D: React.FC<MindOrb3DProps> = ({
     );
     observer.observe(mountRef.current);
 
-    // Resize listener
     const handleResize = () => {
       if (!mountRef.current || !rendererRef.current) return;
-      const newWidth = mountRef.current.clientWidth;
-      const newHeight = mountRef.current.clientHeight;
+      const newWidth = size || mountRef.current.clientWidth;
+      const newHeight = size || mountRef.current.clientHeight;
       camera.aspect = newWidth / newHeight;
       camera.updateProjectionMatrix();
       rendererRef.current.setSize(newWidth, newHeight);
@@ -289,9 +347,8 @@ export const MindOrb3D: React.FC<MindOrb3DProps> = ({
       geometry.dispose();
       material.dispose();
     };
-  }, []);
+  }, [size]);
 
-  // Update uniforms when props change
   useEffect(() => {
     if (!materialRef.current) return;
     const targetColors = STATE_COLORS[mentalState.toLowerCase()] || STATE_COLORS.flow;
@@ -299,18 +356,20 @@ export const MindOrb3D: React.FC<MindOrb3DProps> = ({
     materialRef.current.uniforms.uColorPrimary.value.set(targetColors.primary);
     materialRef.current.uniforms.uColorSecondary.value.set(targetColors.secondary);
     materialRef.current.uniforms.uColorAmbient.value.set(targetColors.ambient);
+    materialRef.current.uniforms.uColorSpecular.value.set(targetColors.specular);
     materialRef.current.uniforms.uFluidity.value = fluidity;
     materialRef.current.uniforms.uIsWorn.value = isWorn ? 1.0 : 0.0;
 
-    // Distortion increases with lower fluidity / higher stress
-    const distortion = mentalState === 'stress' ? 0.28 : mentalState === 'flow' ? 0.12 : 0.18;
+    // Amplitude of 3D liquid waves
+    const distortion = mentalState === 'stress' ? 0.32 : mentalState === 'flow' ? 0.20 : 0.24;
     materialRef.current.uniforms.uDistortion.value = distortion;
   }, [mentalState, fluidity, isWorn]);
 
   return (
     <div
       ref={mountRef}
-      className={`relative flex items-center justify-center w-72 h-72 md:w-88 md:h-88 heavy-orb-container ${className}`}
+      className={`relative flex items-center justify-center heavy-orb-container ${className}`}
+      style={size ? { width: size, height: size } : undefined}
     />
   );
 };
